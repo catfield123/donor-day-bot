@@ -21,7 +21,7 @@ To run this bot locally, you will need:
 ### Installation
 
 1. Clone the repository:
-```bash
+```
 git clone https://github.com/yourusername/donor-registration-bot.git
 cd donor-registration-bot
 ```
@@ -46,7 +46,7 @@ TELEGRAM_BOT_TOKEN=123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11
 3. Configure Google Sheets.
 
 4. Run docker containers:
-```
+```bash
 docker compose build
 docker compose up -d
 ```
