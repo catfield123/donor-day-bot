@@ -33,7 +33,7 @@ cd donor-registration-bot
 chmod +x init.sh
 ./init.sh
 ```
-This script can generate .env file with password for database and  ask you to paste your telegram bot token. Just paste it and press enter.
+This script can generate .env file with password for database and  ask you to paste your telegram bot token. Just paste it and press enter. Note, that token is hidden while you are entering it in terminal. 
 
 
 ##### Manually
