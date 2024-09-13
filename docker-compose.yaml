@@ -3,6 +3,8 @@ services:
   db:
     container_name: dd-database
     image: postgres:latest
+    env_file:
+      - database/.db.env
     volumes:
       - ./database/data:/var/lib/postgresql/data
       - ./database/init_scripts:/docker-entrypoint-initdb.d
@@ -19,7 +21,7 @@ services:
     build:
       context: user-bot/
     env_file:
-      - database/.db.env
+      - user_token.env
     restart: always
     depends_on:
       db:
@@ -30,7 +32,7 @@ services:
     build:
       context: staff-bot/
     env_file:
-      - database/.db.env
+      - staff_token.env
     restart: always
     depends_on:
       db:
