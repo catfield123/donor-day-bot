@@ -26,21 +26,32 @@ git clone https://github.com/yourusername/donor-registration-bot.git
 cd donor-registration-bot
 ```
 
-2. Create an environment file with your token:
+2. Create environment files:
+
+#### Using init scripts
 ```
-chmod +x create_env_file.sh
-./create_env_file.sh
+chmod +x init.sh
+./init.sh
 ```
-This script will ask you to paste your telegram bot token. Just paste it and press enter.
+This script can generate .env file with password for database and  ask you to paste your telegram bot token. Just paste it and press enter.
 
 
-You can also create this file manually. File must contain following:
+#### Manually
+
+File token.env must contain following:
 ```
 TELEGRAM_BOT_TOKEN=<token>
 ```
 For example:
 ```
 TELEGRAM_BOT_TOKEN=123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11
+```
+
+File database/db.env must contain following:
+```
+POSTGRES_USER=dd_user
+POSTGRES_PASSWORD="YOUR_SECRET_PASSWORD_HERE"
+POSTGRES_DB=dd_database
 ```
 
 3. Configure Google Sheets.
