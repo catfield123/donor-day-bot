@@ -20,15 +20,15 @@ To run this bot locally, you will need:
 
 ### Installation
 
-1. Clone the repository:
+#### 1. Clone the repository:
 ```
 git clone https://github.com/yourusername/donor-registration-bot.git
 cd donor-registration-bot
 ```
 
-2. Create environment files:
+#### 2. Create environment files:
 
-#### Using init scripts
+##### Using init scripts
 ```
 chmod +x init.sh
 ./init.sh
@@ -36,7 +36,7 @@ chmod +x init.sh
 This script can generate .env file with password for database and  ask you to paste your telegram bot token. Just paste it and press enter.
 
 
-#### Manually
+##### Manually
 
 File token.env must contain following:
 ```
@@ -54,15 +54,15 @@ POSTGRES_PASSWORD="YOUR_SECRET_PASSWORD_HERE"
 POSTGRES_DB=dd_database
 ```
 
-3. Configure Google Sheets.
+#### 3. Configure Google Sheets.
 
-4. Pre-build docker container with uv installed. Copy and run following command in terminal:
+#### 4. Pre-build docker container with uv installed. Copy and run following command in terminal:
 ```
 echo 'FROM python:3.11-slim-buster
 RUN pip install uv' | docker build -t python:3.11-slim-buster-uv -
 ```
 
-5. Run docker containers:
+#### 5. Run docker containers:
 ```bash
 docker compose build
 docker compose up -d
