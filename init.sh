@@ -61,14 +61,14 @@ generate_db_env_variables() {
 
 
 # TELEGRAM BOT TOKEN ENV
-generate_bot_token_env() {
-  filename="token.env"
+generate_user_bot_token_env() {
+  filename="user_token.env"
   echo "Generating $filename"
   check_file_exists $filename
 
   if confirm "Do you want to proceed? [y/N]"; then
-      read -p "Please enter the Telegram Bot Token: " token
-      echo TELEGRAM_BOT_TOKEN="$token" > $filename
+      read -s -p "Please enter the Telegram Bot Token for users: " token
+      echo USER_BOT_TOKEN="$token" > $filename
       message="$filename generated successfully.\n\n"
   else
       message="$filename generation canceled.\n\n"
@@ -76,7 +76,20 @@ generate_bot_token_env() {
 }
 
 
+# TELEGRAM USER BOT TOKEN ENV
+generate_staff_bot_token_env() {
+  filename="staff_token.env"
+  echo "Generating $filename"
+  check_file_exists $filename
 
+  if confirm "Do you want to proceed? [y/N]"; then
+      read -s -p "Please enter the Telegram Bot Token for staff: " token
+      echo STAFF_BOT_TOKEN="$token" > $filename
+      message="$filename generated successfully.\n\n"
+  else
+      message="$filename generation canceled.\n\n"
+  fi
+}
 
 
 
@@ -137,7 +150,7 @@ function show_menu() {
 
 
 while true; do
-    options=('Database .env file' 'Bot token .env file' 'Exit')
+    options=('database/db.env file' 'user_token.env - users bot token for' 'staff_token.env - staff bot token' 'Exit')
     show_menu "$message" "${options[@]}"
 
     choice=$?
@@ -149,9 +162,13 @@ while true; do
             ;;
         1)
             clear
-            generate_bot_token_env
+            generate_user_bot_token_env
             ;;
         2)
+            clear
+            generate_staff_bot_token_env
+            ;;
+        3)
             echo "Exiting..."
             exit 0
             ;;
