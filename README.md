@@ -38,7 +38,7 @@ This script can generate .env file with password for database and  ask you to pa
 
 ##### Manually
 
-File user_token.env must contain following:
+File `user_token.env` must contain following:
 ```
 USER_BOT_TOKEN=<token>
 ```
@@ -47,12 +47,12 @@ For example:
 USER_BOT_TOKEN=123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11
 ```
 
-File staff_token.env must contain following:
+File `staff_token.env` must contain following:
 ```
 STAFF_BOT_TOKEN=<token>
 ```
 
-File database/db.env must contain following:
+File `database/db.env` must contain following:
 ```
 POSTGRES_USER=dd_user
 POSTGRES_PASSWORD="YOUR_SECRET_PASSWORD_HERE"
