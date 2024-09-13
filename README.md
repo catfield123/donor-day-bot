@@ -56,7 +56,13 @@ POSTGRES_DB=dd_database
 
 3. Configure Google Sheets.
 
-4. Run docker containers:
+4. Pre-build docker container with uv installed. Copy and run following command in terminal:
+```
+echo 'FROM python:3.11-slim-buster
+RUN pip install uv' | docker build -t python:3.11-slim-buster-uv -
+```
+
+5. Run docker containers:
 ```bash
 docker compose build
 docker compose up -d
