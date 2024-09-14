@@ -1,21 +1,5 @@
 
-services:
-  db:
-    container_name: dd-database
-    image: postgres:latest
-    env_file:
-      - database/.db.env
-    volumes:
-      - ./database/data:/var/lib/postgresql/data
-      - ./database/init_scripts:/docker-entrypoint-initdb.d
-      - /etc/localtime:/etc/localtime:ro
-    restart: always
-    healthcheck:
-      test: ["CMD-SHELL", "sh -c 'pg_isready -U dd_user -d dd_database'"]
-      interval: 5s
-      timeout: 3s
-      retries: 3
-      
+services:      
   user-bot:
     container_name: dd-user-bot
     build:
@@ -25,6 +9,8 @@ services:
     restart: always
     depends_on:
       db:
+        condition: service_healthy
+      mongo:
         condition: service_healthy
       
   staff-bot:
@@ -37,3 +23,39 @@ services:
     depends_on:
       db:
         condition: service_healthy
+      mongo:
+        condition: service_healthy
+        
+  db:
+    container_name: dd-database
+    image: postgres:latest
+    env_file:
+      - database/.db.env
+    volumes:
+      - donor_day_postgres_data:/var/lib/postgresql/data
+      - ./database/init_scripts:/docker-entrypoint-initdb.d
+      - /etc/localtime:/etc/localtime:ro
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "sh -c 'pg_isready -U dd_user -d dd_database'"]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+        
+  mongo:
+    container_name: dd-mongo
+    image: mongo:7
+    volumes:
+      - donor_day_mongo_data:/data/db
+      - /etc/localtime:/etc/localtime:ro
+    restart: always
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 5s
+      timeout: 3s
+      retries: 3
+      
+volumes:
+  donor_day_mongo_data:
+  donor_day_postgres_data:
+  
