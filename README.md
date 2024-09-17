@@ -22,8 +22,8 @@ To run this bot locally, you will need:
 
 #### 1. Clone the repository:
 ```
-git clone https://github.com/yourusername/donor-registration-bot.git
-cd donor-registration-bot
+git clone https://github.com/catfield123/donor-day-bot
+cd donor-day-bot
 ```
 
 #### 2. Create environment files:
