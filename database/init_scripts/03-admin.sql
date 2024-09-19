@@ -1,3 +1,3 @@
-CREATE TABLE "admin" (
+CREATE TABLE admin (
     telegram_id TEXT PRIMARY KEY
-)
+);
