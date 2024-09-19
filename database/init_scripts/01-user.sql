@@ -29,10 +29,10 @@ CREATE TYPE body_weight as ENUM (
     'Меньше 50 кг.'
 );
 
-CREATE TYPE "donor_status" as ENUM (
-    "confirmed",
-    "unconfirmed",
-    "not specified"
+CREATE TYPE donor_status as ENUM (
+    'confirmed',
+    'unconfirmed',
+    'not specified'
 );
 
 CREATE TABLE "user" (
