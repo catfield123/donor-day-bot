@@ -7,6 +7,7 @@ services:
     build:
       context: user-bot/
     env_file:
+      - database/.db.env
       - user_token.env
     restart: always
     depends_on:
@@ -22,6 +23,7 @@ services:
     build:
       context: staff-bot/
     env_file:
+      - database/.db.env
       - staff_token.env
     restart: always
     depends_on:
