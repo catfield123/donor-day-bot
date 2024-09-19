@@ -2,6 +2,8 @@
 services:      
   user-bot:
     container_name: dd-user-bot
+    volumes:
+      - ./common:/app/src/common
     build:
       context: user-bot/
     env_file:
@@ -15,6 +17,8 @@ services:
       
   staff-bot:
     container_name: dd-staff-bot
+    volumes:
+      - ./common:/app/src/common
     build:
       context: staff-bot/
     env_file:
