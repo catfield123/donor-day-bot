@@ -1,0 +1,8 @@
+CREATE OR REPLACE FUNCTION refresh_last_updated()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_at = CURRENT_TIMESTAMP;
+    RETURN NEW;
+END;
+$$
+LANGUAGE plpgsql;
