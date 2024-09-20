@@ -52,7 +52,7 @@ File `staff_token.env` must contain following:
 STAFF_BOT_TOKEN=<token>
 ```
 
-File `database/db.env` must contain following:
+File `database/.db.env` must contain following:
 ```
 POSTGRES_USER=dd_user
 POSTGRES_PASSWORD="YOUR_SECRET_PASSWORD_HERE"
