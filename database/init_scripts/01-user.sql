@@ -1,17 +1,22 @@
-CREATE TYPE faculty AS ENUM (
-    'ГИ',
-    'ИСИ',
-    'ИБСИБ',
-    'ИКНК',
-    'ИММИТ',
-    'ИФИМ',
-    'ИФКСТ',
-    'ИЭИТ',
-    'ИЭ',
-    'ПИШ Цифровой инжиниринг',  
-    'ФизМех',
-    'ИПМЭИТ'
+CREATE TABLE faculty (
+    id SERIAL PRIMARY KEY,
+    name TEXT NOT NULL
 );
+
+INSERT INTO faculty (name) VALUES 
+    ('ГИ'),
+    ('ИСИ'),
+    ('ИБСИБ'),
+    ('ИКНК'),
+    ('ИММИТ'),
+    ('ИФИМ'),
+    ('ИФКСТ'),
+    ('ИЭИТ'),
+    ('ИЭ'),
+    ('ПИШ Цифровой инжиниринг'),  
+    ('ФизМех'),
+    ('ИПМЭИТ')
+;
 
 CREATE TYPE founding_source as ENUM (
     'budget',
@@ -50,7 +55,7 @@ CREATE TABLE "user" (
     is_polytech_student BOOL NOT NULL,
     grade_book_number CHAR(8),
     group_number TEXT,
-    faculty faculty,
+    faculty_id INTEGER NOT NULL REFERENCES faculty(id),
     founding_source founding_source,
 
     inn TEXT NOT NULL,
