@@ -53,7 +53,10 @@ services:
   mongo:
     container_name: dd-mongo
     image: mongo:7
+    env_file:
+      - ./mongo/.db.env
     volumes:
+      - ./mongo/init_mongo.sh:/docker-entrypoint-initdb.d/init.sh:ro
       - donor_day_mongo_data:/data/db
       - /etc/localtime:/etc/localtime:ro
     restart: always
