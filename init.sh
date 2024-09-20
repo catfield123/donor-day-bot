@@ -60,6 +60,26 @@ generate_db_env_variables() {
 }
 
 
+# MONGO ENV VARIABLES
+generate_mongo_env_variables() {
+  filename="mongo/.db.env"
+  echo "Generating $filename"
+  check_file_exists $filename
+  if confirm "Do you want to proceed? [y/N]"; then
+      echo MONGO_INITDB_DATABASE=dd_mongo > $filename
+      echo MONGO_INITDB_ROOT_USERNAME=dd_root_user >> $filename
+      echo MONGO_INITDB_ROOT_PASSWORD=\"$(generate_password)\" >> $filename
+      echo MONGODB_DB=fsm_db >> $filename
+      echo MONGODB_USER=fsm_user >> $filename
+      echo MONGODB_PASSWORD=\"$(generate_password)\" >> $filename
+
+      message="$filename generated successfully\n\n"
+  else
+      message="$filename generation canceled.\n\n"
+  fi
+}
+
+
 # TELEGRAM BOT TOKEN ENV
 generate_user_bot_token_env() {
   filename="user_token.env"
@@ -150,7 +170,7 @@ function show_menu() {
 
 
 while true; do
-    options=('database/db.env file' 'user_token.env - users bot token for' 'staff_token.env - staff bot token' 'Exit')
+    options=('database/.db.env file' 'mongo/.db.env file' 'user_token.env - user bot token' 'staff_token.env - staff bot token' 'Exit')
     show_menu "$message" "${options[@]}"
 
     choice=$?
@@ -162,13 +182,17 @@ while true; do
             ;;
         1)
             clear
-            generate_user_bot_token_env
+            generate_mongo_env_variables
             ;;
         2)
             clear
-            generate_staff_bot_token_env
+            generate_user_bot_token_env
             ;;
         3)
+            clear
+            generate_staff_bot_token_env
+            ;;
+        4)
             echo "Exiting..."
             exit 0
             ;;
