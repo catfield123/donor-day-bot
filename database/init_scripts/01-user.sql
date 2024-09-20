@@ -41,9 +41,9 @@ CREATE TYPE donor_status as ENUM (
 );
 
 CREATE TABLE "user" (
-    id INTEGER PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
+    telegram_id TEXT UNIQUE NOT NULL,
 
-    telegram_id TEXT NOT NULL,
     phone_number TEXT NOT NULL,
     email TEXT NOT NULL,
 
