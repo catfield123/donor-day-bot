@@ -1,6 +1,6 @@
 CREATE TABLE donation_place (
     id SERIAL PRIMARY KEY,
-    name TEXT NOT NULL UNIQUE,
+    name TEXT NOT NULL UNIQUE
 );
 
 INSERT INTO donation_place VALUES 
