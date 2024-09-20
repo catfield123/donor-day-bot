@@ -77,7 +77,7 @@ CREATE TABLE "user" (
     bone_marrow_typing_agreement BOOL NOT NULL,
 
     donation_place TEXT NOT NULL,
-    donation TIMESTAMP WITH TIME ZONE NOT NULL,
+    donation_datetime TIMESTAMP WITH TIME ZONE NOT NULL,
 
     donor_status donor_status NOT NULL DEFAULT 'not specified',
     
