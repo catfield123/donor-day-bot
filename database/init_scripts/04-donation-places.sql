@@ -3,9 +3,9 @@ CREATE TABLE donation_place (
     name TEXT NOT NULL UNIQUE
 );
 
-INSERT INTO donation_place VALUES 
-    ("Башня Политеха"),
-    ("Елизаветинская больница")
+INSERT INTO donation_place (name) VALUES
+    ('Башня Политеха'),
+    ('Елизаветинская больница')
 ;
 
 CREATE TABLE donation_datetime (
