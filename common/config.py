@@ -16,3 +16,19 @@ class DatabaseSettings(BaseSettings):
         )
 
 database_settings = DatabaseSettings()
+
+
+class MongoSettings(BaseSettings):
+    FSM_USER: str = Field(..., env="FSM_USER")
+    FSM_PASSWORD: str = Field(..., env="FSM_PASSWORD")
+    FSM_DB : str = Field(..., env="FSM_DB")
+    mongo_host: str = "mongo"
+    mongo_port: str = "27017"
+
+    @property
+    def mongo_url(self) -> str:
+        return (
+            f"mongodb://{self.FSM_USER}:{self.FSM_PASSWORD}@{self.mongo_host}:{self.mongo_port}"
+        )
+
+mongo_settings = MongoSettings()
