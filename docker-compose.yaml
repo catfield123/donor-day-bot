@@ -8,7 +8,7 @@ services:
       context: user-bot/
     env_file:
       - database/.db.env
-      - mongo/.db.env
+      - mongo/.fsm.env
       - user_token.env
     restart: always
     depends_on:
@@ -25,7 +25,7 @@ services:
       context: staff-bot/
     env_file:
       - database/.db.env
-      - mongo/.db.env
+      - mongo/.fsm.env
       - staff_token.env
     restart: always
     depends_on:
@@ -56,7 +56,8 @@ services:
     container_name: dd-mongo
     image: mongo:7
     env_file:
-      - ./mongo/.db.env
+      - ./mongo/.root.env
+      - ./mongo/.fsm.env
     volumes:
       - ./mongo/init_mongo.sh:/docker-entrypoint-initdb.d/init.sh:ro
       - donor_day_mongo_data:/data/db
