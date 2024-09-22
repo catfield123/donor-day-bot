@@ -8,6 +8,7 @@ services:
       context: user-bot/
     env_file:
       - database/.db.env
+      - mongo/.db.env
       - user_token.env
     restart: always
     depends_on:
@@ -24,6 +25,7 @@ services:
       context: staff-bot/
     env_file:
       - database/.db.env
+      - mongo/.db.env
       - staff_token.env
     restart: always
     depends_on:
