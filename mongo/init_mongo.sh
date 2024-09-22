@@ -23,7 +23,7 @@ fi
 mongosh <<EOF
 use admin
 
-# Проверка существования пользователя перед его созданием
+
 if (db.getUser('$FSM_USER') === null) {
   db.createUser({
     user: '$FSM_USER',
