@@ -59,11 +59,15 @@ POSTGRES_PASSWORD="YOUR_SECRET_PASSWORD_HERE"
 POSTGRES_DB=dd_database
 ```
 
-File `mongo/.db.env` must contain following:
+File `mongo/.root.env` must contain following:
 ```
 MONGO_INITDB_DATABASE=dd_mongo
 MONGO_INITDB_ROOT_USERNAME=dd_root_user
 MONGO_INITDB_ROOT_PASSWORD="YOUR_SECRET_PASSWORD_HERE"
+```
+
+File `mongo/.fsm.env` must contain following:
+```
 FSM_DB=fsm_db
 FSM_USER=fsm_user
 FSM_PASSWORD="YOUR_SECRET_PASSWORD_HERE"
