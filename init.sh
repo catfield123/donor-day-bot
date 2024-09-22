@@ -62,20 +62,23 @@ generate_db_env_variables() {
 
 # MONGO ENV VARIABLES
 generate_mongo_env_variables() {
-  filename="mongo/.db.env"
-  echo "Generating $filename"
-  check_file_exists $filename
+  filename_root="mongo/.root.env"
+  filename_fsm="mongo/.fsm.env"
+  echo "Generating $filename_root and $filename_fsm"
+  check_file_exists $filename_root
+  check_file_exists $filename_fsm
   if confirm "Do you want to proceed? [y/N]"; then
-      echo MONGO_INITDB_DATABASE=dd_mongo > $filename
-      echo MONGO_INITDB_ROOT_USERNAME=dd_root_user >> $filename
-      echo MONGO_INITDB_ROOT_PASSWORD=\"$(generate_password)\" >> $filename
-      echo MONGODB_DB=fsm_db >> $filename
-      echo MONGODB_USER=fsm_user >> $filename
-      echo MONGODB_PASSWORD=\"$(generate_password)\" >> $filename
+      echo MONGO_INITDB_DATABASE=dd_mongo > $filename_root
+      echo MONGO_INITDB_ROOT_USERNAME=dd_root_user >> $filename_root
+      echo MONGO_INITDB_ROOT_PASSWORD=\"$(generate_password)\" >> $filename_root
+      
+      echo FSM_DB=fsm_db > $filename_fsm
+      echo FSM_USER=fsm_user >> $filename_fsm
+      echo FSM_PASSWORD=\"$(generate_password)\" >> $filename_fsm
 
-      message="$filename generated successfully\n\n"
+      message="$filename_root generated successfully \n$filename_fsm generated successfully\n\n"
   else
-      message="$filename generation canceled.\n\n"
+      message="$filename_root generation canceled. \n$filename_fsm generation canceled.\n\n"
   fi
 }
 
@@ -170,7 +173,7 @@ function show_menu() {
 
 
 while true; do
-    options=('database/.db.env file' 'mongo/.db.env file' 'user_token.env - user bot token' 'staff_token.env - staff bot token' 'Exit')
+    options=('database/.db.env file' 'mongo/.root.env & mongo/.fsm.env files' 'user_token.env - user bot token' 'staff_token.env - staff bot token' 'Exit')
     show_menu "$message" "${options[@]}"
 
     choice=$?
