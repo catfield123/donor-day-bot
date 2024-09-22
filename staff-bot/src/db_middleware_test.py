@@ -18,7 +18,8 @@ TOKEN = getenv("STAFF_BOT_TOKEN")
 
 # All handlers should be attached to the Router (or Dispatcher)
 
-dp = Dispatcher()
+from fsm import staff_fsm_storage
+dp = Dispatcher(storage=staff_fsm_storage)
 
 from aiogram import Router
 
