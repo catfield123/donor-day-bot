@@ -43,7 +43,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
     restart: always
     ports:
-      - "12345:5432"
+      - 127.0.0.1:12345:5432
     healthcheck:
       test: ["CMD-SHELL", "sh -c 'pg_isready -U dd_user -d dd_database'"]
       interval: 5s
