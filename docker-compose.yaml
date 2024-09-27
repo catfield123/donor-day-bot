@@ -58,6 +58,8 @@ services:
     env_file:
       - ./mongo/.root.env
       - ./mongo/.fsm.env
+    ports:
+      - 127.0.0.1:27017:27017
     volumes:
       - ./mongo/init_mongo.sh:/docker-entrypoint-initdb.d/init.sh:ro
       - donor_day_mongo_data:/data/db
