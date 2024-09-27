@@ -20,14 +20,14 @@ new_volunteer_router.message.middleware(DatabaseMiddleware())
 
 @new_volunteer_router.message(IdleStates.idle, F.text == NewVolunteerExpectedMessages.ASSIGN_VOLUNTEER)
 @new_volunteer_router.message(IdleStates.idle, Command("new_volunteer"))
-async def assign_volunteer(message: Message, state: FSMContext):
+async def start_volunteer_assignment(message: Message, state: FSMContext):
     await message.answer(NewVolunteerResponses.ASK_FOR_FORWARDED_MESSAGE, reply_markup=common.keyboards.cancel_keyboard)
     await state.set_state(NewVolunteerStates.waiting_for_message)
 
 
 @new_volunteer_router.message(NewVolunteerStates.confirm_volunteer, F.text == NewVolunteerExpectedMessages.CANCEL)
 @new_volunteer_router.message(NewVolunteerStates.waiting_for_message, F.text == NewVolunteerExpectedMessages.CANCEL)
-async def process_forwarded_message(message: Message, state: FSMContext):
+async def cancel(message: Message, state: FSMContext):
     await message.answer(NewVolunteerResponses.OPERATION_CANCELED, reply_markup=common.keyboards.remove_keyboard)
     await state.set_state(IdleStates.idle)
 
@@ -45,12 +45,12 @@ async def process_forwarded_message(message: Message, state: FSMContext):
 
 
 @new_volunteer_router.message(NewVolunteerStates.confirm_volunteer, F.text == NewVolunteerExpectedMessages.CONFIRM_ASSIGN)
-async def confirm_volunteer(message: Message, state: FSMContext, db):
+async def confirm_volunteer_assigment(message: Message, state: FSMContext, db):
     await message.answer(NewVolunteerResponses.VOLUNTEER_ASSIGNED, reply_markup=common.keyboards.remove_keyboard)
     await state.set_state(IdleStates.idle)
 
 
 @new_volunteer_router.message(NewVolunteerStates.confirm_volunteer, F.text == NewVolunteerExpectedMessages.CHOOSE_ANOTHER_USER)
-async def confirm_volunteer(message: Message, state: FSMContext, db):
+async def choose_another_donor(message: Message, state: FSMContext, db):
     await message.answer(NewVolunteerResponses.ASK_FOR_FORWARDED_MESSAGE, reply_markup=common.keyboards.remove_keyboard)
     await state.set_state(NewVolunteerStates.waiting_for_message)
