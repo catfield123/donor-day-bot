@@ -1,3 +1,5 @@
+from common.utils import escape_markdown_v2
+
 class NewVolunteerResponses:
     ASK_FOR_FORWARDED_MESSAGE = "Перешлите сообщение пользователя, которого хотите назначить волонтёром\."
     
@@ -16,7 +18,7 @@ class NewVolunteerResponses:
 
     @staticmethod
     def get_confirm_text(message) -> str:
-        full_name = message.forward_from.full_name.replace('.', '\\.')
+        full_name = escape_markdown_v2(message.forward_from.full_name)
         if message.forward_from.username:
             username_text = f"[{full_name}](https://t.me/{message.forward_from.username})"
         else:
