@@ -2,10 +2,10 @@ from aiogram import Router, F
 from aiogram.types import Message
 from aiogram.fsm.context import FSMContext
 from aiogram.filters import Command
-from states.new_volunteer import NewVolunteerStates
 from common.middleware import DatabaseMiddleware
 
 
+from states.new_volunteer import NewVolunteerStates
 from keyboards.reply.new_volunteer import NewVolunteerKeyboard
 from responses.new_volunteer import NewVolunteerResponses
 from expected_messages.new_volunteer import NewVolunteerExpectedMessages
