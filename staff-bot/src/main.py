@@ -11,10 +11,12 @@ from aiogram.types import Message
 from config import staff_settings
 TOKEN = staff_settings.STAFF_BOT_TOKEN
 
-# All handlers should be attached to the Router (or Dispatcher)
+from fsm import staff_fsm_storage
+dp = Dispatcher(storage=staff_fsm_storage)
 
-dp = Dispatcher()
+from handlers.new_volunteer import new_volunteer_router
 
+dp.include_router(new_volunteer_router)
 
 @dp.message(CommandStart())
 async def command_start_handler(message: Message) -> None:
