@@ -1,0 +1,4 @@
+
+
+class VolunteerAlreadyExists(Exception):
+    pass
