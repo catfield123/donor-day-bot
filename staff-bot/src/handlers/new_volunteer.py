@@ -12,6 +12,8 @@ from expected_messages.new_volunteer import NewVolunteerExpectedMessages
 from crud.new_volunteer import create_new_volunteer
 from exceptions.new_volunteer import VolunteerAlreadyExists
 
+from middleware import IsAdminMiddleware
+
 from schemas import NewVolunteerRequestSchema
 
 import common.keyboards
@@ -20,6 +22,7 @@ from common.states import IdleStates
 new_volunteer_router = Router()
 
 new_volunteer_router.message.middleware(DatabaseMiddleware())
+new_volunteer_router.message.middleware(IsAdminMiddleware())
 
 
 @new_volunteer_router.message(IdleStates.idle, F.text == NewVolunteerExpectedMessages.ASSIGN_VOLUNTEER)
