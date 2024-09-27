@@ -1,0 +1,3 @@
+
+class DatabaseConnectionError(Exception):
+    pass
