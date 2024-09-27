@@ -3,10 +3,11 @@ from pydantic import BaseModel
 
 from common.models import DonorStatusEnum
 
-class UserChangeStatusRequest(BaseModel):
+
+class ChangeDonorStatusRequest(BaseModel):
     id : int
     donor_status : DonorStatusEnum
 
-class UserShowToVolunteer(UserBase):
+class ShowDonorInfoToVolunteer(UserBase):
     id : int
     donor_status : DonorStatusEnum
