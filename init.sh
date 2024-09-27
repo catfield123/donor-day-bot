@@ -4,7 +4,7 @@ generate_password() {
     local length=32
     local password=""
 
-    local ALLOWED_CHARS="a-zA-Z0-9=_+\-#%"
+    local ALLOWED_CHARS="a-zA-Z0-9_"
 
     while [ ${#password} -lt $length ]; do
         password=$(tr -dc "$ALLOWED_CHARS" < /dev/urandom | head -c $length)
