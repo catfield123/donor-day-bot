@@ -29,6 +29,10 @@ class NewVolunteerResponses:
         
     VOLUNTEER_ASSIGNED = "Волонтёр назначен\. \n"
     
+    VOLUNTEER_ALREADY_ASSIGNED = (
+        "Этот аккаунт уже является волонтёром\. \n"
+        "Если вы захотите добавить волонтёра, введите команду /new\_volunteer или отправьте текст `Назначить волонтёра`"
+    )
 
 
     
