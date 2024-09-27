@@ -9,6 +9,10 @@ from states.new_volunteer import NewVolunteerStates
 from keyboards.reply.new_volunteer import NewVolunteerKeyboard
 from responses.new_volunteer import NewVolunteerResponses
 from expected_messages.new_volunteer import NewVolunteerExpectedMessages
+from crud.new_volunteer import create_new_volunteer
+from exceptions.new_volunteer import VolunteerAlreadyExists
+
+from schemas import NewVolunteerRequestSchema
 
 import common.keyboards
 from common.states import IdleStates
@@ -38,6 +42,7 @@ async def process_forwarded_message(message: Message, state: FSMContext):
         if message.forward_from.is_bot:
             await message.answer(NewVolunteerResponses.PLEASE_FORWARD_NOT_FROM_BOT)
         else:
+            await state.update_data(forwarded_from_user_id=message.forward_from.id)
             await message.answer(NewVolunteerResponses.get_confirm_text(message), reply_markup=NewVolunteerKeyboard.confirm_volunteer_keyboard)
             await state.set_state(NewVolunteerStates.confirm_volunteer)
     else:
@@ -46,8 +51,17 @@ async def process_forwarded_message(message: Message, state: FSMContext):
 
 @new_volunteer_router.message(NewVolunteerStates.confirm_volunteer, F.text == NewVolunteerExpectedMessages.CONFIRM_ASSIGN)
 async def confirm_volunteer_assigment(message: Message, state: FSMContext, db):
-    await message.answer(NewVolunteerResponses.VOLUNTEER_ASSIGNED, reply_markup=common.keyboards.remove_keyboard)
-    await state.set_state(IdleStates.idle)
+    state_data = await state.get_data()
+    forwarded_from_user_id = state_data.get("forwarded_from_user_id")
+    try:
+        create_new_volunteer(db, NewVolunteerRequestSchema(telegram_id=message.from_user.id, 
+                                                     granted_by_telegram_id=forwarded_from_user_id))
+        await message.answer(NewVolunteerResponses.VOLUNTEER_ASSIGNED, reply_markup=common.keyboards.remove_keyboard)
+    except VolunteerAlreadyExists:
+        await message.answer(NewVolunteerResponses.VOLUNTEER_ALREADY_ASSIGNED, reply_markup=common.keyboards.remove_keyboard)
+    finally:
+        await state.update_data(forwarded_from_user_id=None)
+        await state.set_state(IdleStates.idle)
 
 
 @new_volunteer_router.message(NewVolunteerStates.confirm_volunteer, F.text == NewVolunteerExpectedMessages.CHOOSE_ANOTHER_USER)
