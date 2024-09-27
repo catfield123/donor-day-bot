@@ -2,22 +2,24 @@ from sqlalchemy import Column, Integer, String, ForeignKey, TIMESTAMP, Boolean, 
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 
+from enum import Enum as PyEnum
+
 Base = declarative_base()
 
-class FoundingSourceEnum(Enum):
+class FoundingSourceEnum(PyEnum):
     budget = 'budget'
     contract = 'contract'
 
-class SexEnum(Enum):
+class SexEnum(PyEnum):
     male = 'male'
     female = 'female'
 
-class BodyWeightEnum(Enum):
+class BodyWeightEnum(PyEnum):
     more_then_58_kg = 'Больше 58 кг.'
     between_50_and_58_kg = 'От 50 до 58 кг.'
     less_then_50_kg = 'Меньше 50 кг.'
 
-class DonorStatusEnum(Enum):
+class DonorStatusEnum(PyEnum):
     confirmed = 'confirmed'
     unconfirmed = 'unconfirmed'
     not_specified = 'not specified'
