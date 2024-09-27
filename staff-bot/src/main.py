@@ -19,8 +19,10 @@ from fsm import staff_fsm_storage
 dp = Dispatcher(storage=staff_fsm_storage)
 
 from handlers.new_volunteer import new_volunteer_router
+from handlers.help_and_my_status import help_and_status_router
 
 dp.include_router(new_volunteer_router)
+dp.include_router(help_and_status_router)
 
 @dp.message(CommandStart())
 async def command_start_handler(message: Message, state: FSMContext) -> None:
