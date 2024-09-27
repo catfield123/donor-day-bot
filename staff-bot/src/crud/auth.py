@@ -1,12 +1,14 @@
 from sqlalchemy.orm import Session
 from common.models import Admin, Volunteer
 
-def is_admin(db: Session, telegram_id: str) -> bool:
-    return bool(db.query(Admin).filter(Admin.telegram_id == telegram_id).first())
+from schemas import CheckAuthRequestSchema
 
-def is_volunteer(db: Session, telegram_id: str) -> bool:
-    return bool(db.query(Volunteer).filter(Volunteer.telegram_id == telegram_id).first())
+def db_is_admin(db: Session, check_auth_request: CheckAuthRequestSchema) -> bool:
+    return bool(db.query(Admin).filter(Admin.telegram_id == check_auth_request.telegram_id).first())
 
-def is_admin_or_volunteer(db: Session, telegram_id: str) -> bool:
-    return is_admin(db, telegram_id) or is_volunteer(db, telegram_id)
+def db_is_volunteer(db: Session, check_auth_request: CheckAuthRequestSchema) -> bool:
+    return bool(db.query(Volunteer).filter(Volunteer.telegram_id == check_auth_request.telegram_id).first())
+
+def db_is_admin_or_volunteer(db: Session, check_auth_request: CheckAuthRequestSchema) -> bool:
+    return db_is_admin(db, check_auth_request.telegram_id) or db_is_volunteer(db, check_auth_request.telegram_id)
 
