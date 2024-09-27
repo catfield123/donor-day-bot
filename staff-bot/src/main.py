@@ -49,7 +49,7 @@ async def handle_database_connection_error(event: ErrorEvent, message: Message):
 async def command_start_handler(message: Message, state: FSMContext) -> None:
     current_state = await state.get_state()
     if current_state is None:
-        await message.answer(f"Hello, {escape_markdown_v2(message.from_user.full_name)}\!")
+        await message.answer(f"Привет, {escape_markdown_v2(message.from_user.full_name)}\!")
         await state.set_state(IdleStates.idle)
 
 
