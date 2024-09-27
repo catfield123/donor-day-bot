@@ -9,8 +9,8 @@ from aiogram.enums import ParseMode
 from aiogram.filters import CommandStart
 from aiogram.types import Message
 
-# Bot token can be obtained via https://t.me/BotFather
-TOKEN = getenv("STAFF_BOT_TOKEN")
+from config import staff_settings
+TOKEN = staff_settings.STAFF_BOT_TOKEN
 
 # All handlers should be attached to the Router (or Dispatcher)
 
