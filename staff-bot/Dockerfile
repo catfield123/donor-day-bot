@@ -7,4 +7,4 @@ RUN uv pip install -r requirements.txt --system
 
 COPY src/ src/
 
-CMD ["python", "src/db_middleware_test.py"]
+CMD ["python", "src/main.py"]
