@@ -18,8 +18,8 @@ new_volunteer_router = Router()
 new_volunteer_router.message.middleware(DatabaseMiddleware())
 
 
-@new_volunteer_router.message(F.text == NewVolunteerExpectedMessages.ASSIGN_VOLUNTEER)
-@new_volunteer_router.message(Command("new_volunteer"))
+@new_volunteer_router.message(IdleStates.idle, F.text == NewVolunteerExpectedMessages.ASSIGN_VOLUNTEER)
+@new_volunteer_router.message(IdleStates.idle, Command("new_volunteer"))
 async def assign_volunteer(message: Message, state: FSMContext):
     await message.answer(NewVolunteerResponses.ASK_FOR_FORWARDED_MESSAGE, reply_markup=common.keyboards.cancel_keyboard)
     await state.set_state(NewVolunteerStates.waiting_for_message)
