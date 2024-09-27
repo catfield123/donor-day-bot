@@ -9,7 +9,9 @@ from states.new_volunteer import NewVolunteerStates
 from keyboards.reply.new_volunteer import NewVolunteerKeyboard
 from responses.new_volunteer import NewVolunteerResponses
 from expected_messages.new_volunteer import NewVolunteerExpectedMessages
+
 import common.keyboards
+from common.states import IdleStates
 
 new_volunteer_router = Router()
 
@@ -27,7 +29,7 @@ async def assign_volunteer(message: Message, state: FSMContext):
 @new_volunteer_router.message(NewVolunteerStates.waiting_for_message, F.text == NewVolunteerExpectedMessages.CANCEL)
 async def process_forwarded_message(message: Message, state: FSMContext):
     await message.answer(NewVolunteerResponses.OPERATION_CANCELED, reply_markup=common.keyboards.remove_keyboard)
-    await state.clear()
+    await state.set_state(IdleStates.idle)
 
 
 @new_volunteer_router.message(NewVolunteerStates.waiting_for_message)
@@ -45,7 +47,7 @@ async def process_forwarded_message(message: Message, state: FSMContext):
 @new_volunteer_router.message(NewVolunteerStates.confirm_volunteer, F.text == NewVolunteerExpectedMessages.CONFIRM_ASSIGN)
 async def confirm_volunteer(message: Message, state: FSMContext, db):
     await message.answer(NewVolunteerResponses.VOLUNTEER_ASSIGNED, reply_markup=common.keyboards.remove_keyboard)
-    await state.clear()
+    await state.set_state(IdleStates.idle)
 
 
 @new_volunteer_router.message(NewVolunteerStates.confirm_volunteer, F.text == NewVolunteerExpectedMessages.CHOOSE_ANOTHER_USER)
