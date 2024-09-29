@@ -7,12 +7,12 @@ from enum import Enum as PyEnum
 Base = declarative_base()
 
 class FoundingSourceEnum(PyEnum):
-    budget = 'budget'
-    contract = 'contract'
+    budget = 'Бюджет'
+    contract = 'Контракт'
 
 class SexEnum(PyEnum):
-    male = 'male'
-    female = 'female'
+    male = 'Мужской'
+    female = 'Женский'
 
 class BodyWeightEnum(PyEnum):
     more_then_58_kg = 'Больше 58 кг.'

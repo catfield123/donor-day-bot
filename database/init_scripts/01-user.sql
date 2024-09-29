@@ -19,13 +19,13 @@ INSERT INTO faculty (name) VALUES
 ;
 
 CREATE TYPE founding_source as ENUM (
-    'budget',
-    'contract'
+    'Бюджет',
+    'Котнракт',
 );
 
 CREATE TYPE sex as ENUM (
-    'male',
-    'female'
+    'Мужской',
+    'Женский'
 );
 
 CREATE TYPE body_weight as ENUM (
