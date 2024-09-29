@@ -1,6 +1,6 @@
 from aiogram.fsm.state import State, StatesGroup
 
-class NewVolunteerStates(StatesGroup):
+class UserDataStates(StatesGroup):
     waiting_for_name = State()
     confirm_name = State()
     waiting_for_surname = State()
