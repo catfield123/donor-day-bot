@@ -8,6 +8,8 @@ class UserDataStates(StatesGroup):
     waiting_for_patronymic = State()
     confirm_patronymic = State()
 
+    waiting_for_sex = State()
+    confirm_sex = State()
 
     waiting_for_phone_number = State()
     confirm_phone_number = State()
@@ -43,6 +45,7 @@ class UserDataStates(StatesGroup):
     confirm_passport_issued_date = State()
     waiting_for_passport_issued_organization_code = State()
     confirm_passport_issued_organization_code = State()
+    
     waiting_for_birth_date = State()
     confirm_birth_date = State()
     waiting_for_birth_place = State()
@@ -51,8 +54,6 @@ class UserDataStates(StatesGroup):
     confirm_registration_address = State()
 
 
-    waiting_for_sex = State()
-    confirm_sex = State()
     waiting_for_body_weight = State()
     confirm_body_weight = State()
 
