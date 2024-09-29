@@ -76,7 +76,9 @@ async def confirm_data(message: Message, state: FSMContext):
 @user_data_router.message(UserDataStates.waiting_for_patronymic)
 async def process_patronymic(message: Message, state: FSMContext):
     patronymic = message.text
-    await state.update_data(patronymic=message.text)
+    if patronymic == UserDataExpectedMessages.I_HAVE_NO_PATRONYMIC:
+        patronymic = None
+    await state.update_data(patronymic=patronymic)
     await message.answer(UserDataResponses.get_confirm_patronymic_text(patronymic), reply_markup=UserDataReplyKeyboard.confirmation_keyboard)
     await state.set_state(UserDataStates.confirm_patronymic)
 
