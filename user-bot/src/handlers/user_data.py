@@ -105,7 +105,7 @@ async def process_sex(message: Message, state: FSMContext):
 @user_data_router.message(UserDataStates.confirm_sex, ReenterData())
 async def cancel(message: Message, state: FSMContext):
     await state.update_data(sex=None)
-    await message.answer(UserDataResponses.ASK_FOR_SEX, UserDataReplyKeyboard.generate_choose_sex_keyboard())
+    await message.answer(UserDataResponses.ASK_FOR_SEX, reply_markup=UserDataReplyKeyboard.generate_choose_sex_keyboard())
     await state.set_state(UserDataStates.waiting_for_sex)
 
 
