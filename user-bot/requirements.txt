@@ -18,7 +18,10 @@ attrs==24.2.0
 certifi==2024.8.30
     # via aiogram
 dnspython==2.6.1
-    # via pymongo
+    # via
+    #   email-validator
+    #   pymongo
+email-validator==2.2.0
 frozenlist==1.4.1
     # via
     #   aiohttp
@@ -26,7 +29,9 @@ frozenlist==1.4.1
 greenlet==3.1.0
     # via sqlalchemy
 idna==3.8
-    # via yarl
+    # via
+    #   email-validator
+    #   yarl
 magic-filter==1.0.12
     # via aiogram
 motor==3.5.1
