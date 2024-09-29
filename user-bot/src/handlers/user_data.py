@@ -25,7 +25,7 @@ user_data_router.include_router(user_data_db_required_router)
 
 
 @user_data_router.message(IdleStates.idle, F.text == UserDataExpectedMessages.ENTER_DATA)
-@user_data_router.message(IdleStates.idle, Command('/enter_data'))
+@user_data_router.message(IdleStates.idle, Command('enter_data'))
 async def start_entering_data(message: Message, state: FSMContext):
     await message.answer(UserDataResponses.ASK_FOR_NAME, reply_markup=common.keyboards.remove_keyboard)
     await state.set_state(UserDataStates.waiting_for_name)
