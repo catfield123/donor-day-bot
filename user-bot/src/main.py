@@ -1,55 +1,50 @@
 import asyncio
 import logging
 import sys
-from os import getenv
 
-from aiogram import Bot, Dispatcher, html
+from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
-from aiogram.filters import CommandStart
+from aiogram.filters import CommandStart, ExceptionTypeFilter
 from aiogram.types import Message
+from aiogram import F
+from aiogram.types.error_event import ErrorEvent
 
-# Bot token can be obtained via https://t.me/BotFather
-TOKEN = getenv("USER_BOT_TOKEN")
+from aiogram.fsm.context import FSMContext
 
-# All handlers should be attached to the Router (or Dispatcher)
+from common.exceptions import DatabaseConnectionError
+from common.states import IdleStates
+from common.keyboards import remove_keyboard
+from common.utils import escape_markdown_v2
+from common.responses import BOT_IS_UNAVAILABLE_RESPONSE
 
-dp = Dispatcher()
 
+from config import user_settings
+TOKEN = user_settings.USER_BOT_TOKEN
+
+from fsm import user_fsm_storage
+dp = Dispatcher(storage=user_fsm_storage)
+
+from handlers.user_data import user_data_router
+# from handlers.help_and_my_status import help_and_status_router
+
+dp.include_router(user_data_router)
+# dp.include_router(help_and_status_router)
+
+@dp.error(ExceptionTypeFilter(DatabaseConnectionError), F.update.message.as_("message"))
+async def handle_database_connection_error(event: ErrorEvent, message: Message):
+    await message.answer(BOT_IS_UNAVAILABLE_RESPONSE, reply_markup=remove_keyboard)
 
 @dp.message(CommandStart())
-async def command_start_handler(message: Message) -> None:
-    """
-    This handler receives messages with `/start` command
-    """
-    # Most event objects have aliases for API methods that can be called in events' context
-    # For example if you want to answer to incoming message you can use `message.answer(...)` alias
-    # and the target chat will be passed to :ref:`aiogram.methods.send_message.SendMessage`
-    # method automatically or call API method directly via
-    # Bot instance: `bot.send_message(chat_id=message.chat.id, ...)`
-    await message.answer(f"Hello, {html.bold(message.from_user.full_name)}!")
-
-
-@dp.message()
-async def echo_handler(message: Message) -> None:
-    """
-    Handler will forward receive a message back to the sender
-
-    By default, message handler will handle all message types (like a text, photo, sticker etc.)
-    """
-    try:
-        # Send a copy of the received message
-        await message.send_copy(chat_id=message.chat.id)
-    except TypeError:
-        # But not all the types is supported to be copied so need to handle it
-        await message.answer("Nice try!")
+async def command_start_handler(message: Message, state: FSMContext) -> None:
+    current_state = await state.get_state()
+    if current_state is None:
+        await message.answer(f"Привет, {escape_markdown_v2(message.from_user.full_name)}\!")
+        await state.set_state(IdleStates.idle)
 
 
 async def main() -> None:
-    # Initialize Bot instance with default bot properties which will be passed to all API calls
-    bot = Bot(token=TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
-
-    # And the run events dispatching
+    bot = Bot(token=TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.MARKDOWN_V2))
     await dp.start_polling(bot)
 
 
