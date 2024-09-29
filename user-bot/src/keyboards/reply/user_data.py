@@ -97,15 +97,19 @@ class UserDataReplyKeyboard:
     )
 
     @staticmethod
-    def generate_choose_faculty_keyboard() -> ReplyKeyboardMarkup:
-        faculty_names = db_get_faculties_names()
-        keyboard = ReplyKeyboardMarkup(resize_keyboard=True)
+    def generate_choose_faculty_keyboard(db: Session) -> ReplyKeyboardMarkup:
+        faculty_names = db_get_faculties_names(db)
+
+        keyboard_buttons = []
         for i in range(0, len(faculty_names) - 1, 2):
-            keyboard.add(
+            keyboard_buttons.append([
                 KeyboardButton(text=faculty_names[i]),
                 KeyboardButton(text=faculty_names[i + 1])
+                ]
             )
+
         if len(faculty_names) % 2 != 0:
-            keyboard.add(KeyboardButton(text=faculty_names[-1]))
-        return keyboard
+            keyboard_buttons.append([KeyboardButton(text=faculty_names[-1])])
+        
+        return ReplyKeyboardMarkup(keyboard=keyboard_buttons, resize_keyboard=True)
 
