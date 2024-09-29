@@ -84,7 +84,7 @@ async def process_patronymic(message: Message, state: FSMContext):
 @user_data_router.message(UserDataStates.confirm_patronymic, ReenterData())
 async def cancel(message: Message, state: FSMContext):
     await state.update_data(patronymic=None)
-    await message.answer(UserDataResponses.ASK_FOR_PATRONIMYC, reply_markup=common.keyboards.remove_keyboard)
+    await message.answer(UserDataResponses.ASK_FOR_PATRONIMYC, reply_markup=UserDataReplyKeyboard.i_have_no_patronymic_keyboard)
     await state.set_state(UserDataStates.waiting_for_patronymic)
 
 
