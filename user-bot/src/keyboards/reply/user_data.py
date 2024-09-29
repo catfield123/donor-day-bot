@@ -11,19 +11,23 @@ class UserDataReplyKeyboard:
         keyboard=[
             [KeyboardButton(text=UserDataExpectedMessages.CONFIRM_ENTERED_DATA),
             KeyboardButton(text=UserDataExpectedMessages.REENTER_DATA)],
-        ]
+        ],
+        persistent = True,
+        resize_keyboard=True
     )
 
     i_have_no_inn_keyboard =  ReplyKeyboardMarkup(
         keyboard=[
             [KeyboardButton(text=UserDataExpectedMessages.I_HAVE_NO_INN)],
-        ]
+        ],
+        persistent = True
     )
 
     i_have_no_snils_keyboard =  ReplyKeyboardMarkup(
         keyboard=[
             [KeyboardButton(text=UserDataExpectedMessages.I_HAVE_NO_SNILS)],
-        ]
+        ],
+        persistent = True
     )
 
     choose_budget_or_contract_keyboard =  ReplyKeyboardMarkup(
@@ -31,6 +35,7 @@ class UserDataReplyKeyboard:
             [KeyboardButton(text=UserDataExpectedMessages.BUDGET_FOUNDING_SOURCE),
             KeyboardButton(text=UserDataExpectedMessages.CONTRACT_FOUNDING_SOURCE)],
         ],
+        persistent = True,
         resize_keyboard=True
     )
 
@@ -39,6 +44,7 @@ class UserDataReplyKeyboard:
             [KeyboardButton(text=UserDataExpectedMessages.YES_IS_POLYTECH_STUDENT),
             KeyboardButton(text=UserDataExpectedMessages.NO_IS_POLYTECH_STUDENT)],
         ],
+        persistent = True,
         resize_keyboard=True
     )
 
@@ -46,6 +52,7 @@ class UserDataReplyKeyboard:
         keyboard=[
             [KeyboardButton(text=UserDataExpectedMessages.I_HAVE_NO_PATRONYMIC)],
         ],
+        persistent = True,
         resize_keyboard=True
     )
 
@@ -53,6 +60,7 @@ class UserDataReplyKeyboard:
         keyboard=[
             [KeyboardButton(text=UserDataExpectedMessages.I_DONT_REMEMBER_MY_GRADE_BOOK_NUMBER)],
         ],
+        persistent = True,
         resize_keyboard=True
     )
 
@@ -61,6 +69,7 @@ class UserDataReplyKeyboard:
             [KeyboardButton(text=UserDataExpectedMessages.I_AGREE_FOR_BONE_MARROW_TYPING)],
             [KeyboardButton(text=UserDataExpectedMessages.I_DECLINE_FOR_BONE_MARROW_TYPING)],
         ],
+        persistent = True,
         resize_keyboard=True
     )
 
@@ -72,6 +81,7 @@ class UserDataReplyKeyboard:
                 [KeyboardButton(text=SexEnum.male.value),
                 KeyboardButton(text=SexEnum.female.value)]
             ],
+            persistent = True,
             resize_keyboard=True
     )
 
@@ -83,6 +93,7 @@ class UserDataReplyKeyboard:
                 KeyboardButton(text=BodyWeightEnum.between_50_and_58_kg.value)],
                 [KeyboardButton(text=BodyWeightEnum.less_then_50_kg.value)]
             ],
+            persistent = True,
             resize_keyboard=True
     )
 
@@ -93,6 +104,7 @@ class UserDataReplyKeyboard:
                 [KeyboardButton(text=FoundingSourceEnum.budget.value),
                 KeyboardButton(text=FoundingSourceEnum.contract.value)]
             ],
+            persistent = True,
             resize_keyboard=True
     )
 
@@ -111,5 +123,8 @@ class UserDataReplyKeyboard:
         if len(faculty_names) % 2 != 0:
             keyboard_buttons.append([KeyboardButton(text=faculty_names[-1])])
         
-        return ReplyKeyboardMarkup(keyboard=keyboard_buttons, resize_keyboard=True)
+        return ReplyKeyboardMarkup(keyboard=keyboard_buttons, 
+                                   resize_keyboard=True,
+                                   persistent = True
+                                   )
 
