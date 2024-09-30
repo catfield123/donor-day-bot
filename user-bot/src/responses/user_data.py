@@ -138,6 +138,14 @@ class UserDataResponses:
     @staticmethod
     def get_confirm_donation_place_text(donation_place: str) -> str:
         return f"*Место для участия в акции*: \n{escape_markdown_v2(donation_place)}"
+    
+    ASK_FOR_DONATION_DATETIME = "Пожалуйста, выберетие время участия в акции\."
+    @staticmethod
+    def get_confirm_donation_datetime_text(donation_place: str, donation_datetime: str) -> str:
+        return (
+                f"*Место для участия в акции*: \n{escape_markdown_v2(donation_place)}\n\n"
+                f"*Время для участия в акции*: \n{escape_markdown_v2(donation_datetime)}"
+                )
 
     WRONG_FACULTY_NAME = "Неправильное название факультета\. Пожалуйста, выберите один из предложенных вариантов\."
 
