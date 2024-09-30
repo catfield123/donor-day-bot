@@ -5,6 +5,7 @@ class UserDataExpectedMessages:
 
     CONFIRM_ENTERED_DATA = "Подтвердить"
     REENTER_DATA = "Ввести заново"
+    REENTER_PLACE_AND_DATETIME = "Указать другое место"
     
     YES_IS_POLYTECH_STUDENT = "Я студент Политеха"
     NO_IS_POLYTECH_STUDENT = "Я не студент Политеха"
