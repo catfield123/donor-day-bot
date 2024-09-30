@@ -9,8 +9,7 @@ INSERT INTO donation_place (name) VALUES
 ;
 
 CREATE TABLE donation_datetime (
+    id SERIAL PRIMARY KEY,
     place_id INTEGER NOT NULL REFERENCES donation_place(id),
     datetime TIMESTAMP WITH TIME ZONE NOT NULL,
-
-    PRIMARY KEY (place_id, datetime)
 )
