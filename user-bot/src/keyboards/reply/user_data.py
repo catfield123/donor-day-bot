@@ -125,6 +125,15 @@ class UserDataReplyKeyboard:
         
         return ReplyKeyboardMarkup(keyboard=keyboard_buttons, 
                                    resize_keyboard=True,
-                                   persistent = True
+                                   one_time_keyboard = True
                                    )
 
+    confrimation_place_and_datetme_keyboard  =  ReplyKeyboardMarkup(
+        keyboard=[
+            [KeyboardButton(text=UserDataExpectedMessages.CONFIRM_ENTERED_DATA),
+            KeyboardButton(text=UserDataExpectedMessages.REENTER_DATA)],
+            [KeyboardButton(text=UserDataExpectedMessages.REENTER_PLACE_AND_DATETIME)]
+        ],
+        one_time_keyboard = True,
+        resize_keyboard=True
+    )
