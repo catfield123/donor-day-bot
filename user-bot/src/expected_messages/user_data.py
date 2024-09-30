@@ -3,7 +3,7 @@ from common.models import SexEnum, FoundingSourceEnum, BodyWeightEnum
 class UserDataExpectedMessages:
     ENTER_DATA = "Начать ввод данных"
 
-    CONFIRM_ENTERED_DATA = "Да"
+    CONFIRM_ENTERED_DATA = "Подтвердить"
     REENTER_DATA = "Ввести заново"
     
     YES_IS_POLYTECH_STUDENT = "Я студент Политеха"
