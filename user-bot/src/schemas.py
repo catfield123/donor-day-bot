@@ -2,7 +2,7 @@ from datetime import date, datetime
 
 from common.schemas import UserBase
 from common.models import DonorStatusEnum, FoundingSourceEnum, SexEnum, BodyWeightEnum
-from pydantic import EmailStr
+from pydantic import EmailStr, BaseModel, field_validator
 
 class UserCreate(UserBase): 
     phone_number : str
@@ -38,3 +38,16 @@ class UserCreate(UserBase):
 
 class UserShow(UserCreate): 
     id : int
+
+class DonationPlaceDbResponse(BaseModel):
+    id: int
+    name: str
+
+class DonationDatetimesDbResponse(BaseModel):
+    id: int
+    place_id: int
+    datetime: str
+
+    @field_validator("datetime", mode="before")
+    def validate_datetime(cls, value):
+        return value.strftime("%d.%m.%Y %H:%M")
