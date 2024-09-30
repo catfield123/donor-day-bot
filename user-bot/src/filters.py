@@ -19,3 +19,7 @@ class ConfirmEnteredData(Filter):
 class ReenterData(Filter):
     async def __call__(self, message: Message) -> bool:
         return message.text == UserDataExpectedMessages.REENTER_DATA
+    
+class ReenterPlaceAndDatetime(Filter):
+    async def __call__(self, message: Message) -> bool:
+        return message.text == UserDataExpectedMessages.REENTER_PLACE_AND_DATETIME
