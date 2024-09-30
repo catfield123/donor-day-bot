@@ -18,6 +18,7 @@ class DatabaseMiddleware(BaseMiddleware):
             data['db'] = SessionLocal()
             return await handler(event, data)
         except SQLAlchemyError as e:
+            print(e)
             raise DatabaseConnectionError("Error while connecting to database") from e
         finally:
             db = data.get('db')
