@@ -506,7 +506,5 @@ async def cancel(message: Message, state: FSMContext):
     await state.set_state(UserDataStates.waiting_for_bone_marrow_typing_agreement)
 
 
-@user_data_router.message(UserDataStates.confirm_bone_marrow_typing_agreement, ConfirmEnteredData())
-async def confirm_data(message: Message, state: FSMContext):
-    await message.answer(UserDataResponses.get_recheck_data_text(), reply_markup=UserDataInlineKeyboard.edit_data_keyboard)
-    await state.set_state(UserDataStates.recheck_data)
+# after confirming bone_marrow_typing_agreement need to call db to get donation place datetimes
+# so confirming is located in database_required/user_data.pys
