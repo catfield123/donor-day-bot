@@ -68,8 +68,10 @@ class User(Base):
 
     bone_marrow_typing_agreement = Column(Boolean, nullable=False)
 
-    donation_place = Column(String, nullable=False)
-    donation_datetime = Column(TIMESTAMP, nullable=False)
+    donation_place_id = Column(Integer, ForeignKey('donation_place.id'), nullable=False)
+    donation_place = relationship("DonationPlace")
+    donation_datetime_id = Column(Integer, ForeignKey('donation_datetime.id'), nullable=False)
+    donation_datetime = relationship("DonationDatetime")
 
     donor_status = Column(Enum(DonorStatusEnum), nullable=False, name='donor_status', default='not specified')
 
@@ -85,3 +87,14 @@ class Volunteer(Base):
     __tablename__ = 'volunteer'
     telegram_id = Column(String, primary_key=True)
     granted_by_telegram_id = Column(String, ForeignKey('admin.telegram_id'), nullable=False)
+
+class DonationPlace(Base):
+    __tablename__ = 'donation_place'
+    id = Column(Integer, primary_key=True)
+    name = Column(String, nullable=False, unique=True)
+
+class DonationDatetime(Base):
+    __tablename__ = 'donation_datetime'
+    id = Column(Integer, primary_key=True)
+    place_id = Column(Integer, ForeignKey('donation_place.id'))
+    datetime = Column(TIMESTAMP)
