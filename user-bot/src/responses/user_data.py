@@ -146,6 +146,9 @@ class UserDataResponses:
     def get_recheck_data_text() -> str:
         return "Пожалуйста, проверьте правильность введенных данных\."
     
+    DATA_IS_WRITTEN = "Данные успешно записаны\."
+    ENTER_NEW_DATA = "Укажите новые данные\."
+    
     
 
 
