@@ -43,6 +43,10 @@ class DonationPlaceDbResponse(BaseModel):
     id: int
     name: str
 
+class FacultyDbResponse(BaseModel):
+    id: int
+    name: str
+
 class DonationDatetimesDbResponse(BaseModel):
     id: int
     place_id: int
