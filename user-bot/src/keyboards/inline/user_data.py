@@ -28,7 +28,7 @@ class UserDataInlineKeyboard:
                 InlineKeyboardButton(text=UserDataExpectedMessages.EDIT_SEX_DATA, callback_data=EditDataCallback(fields='sex').pack())
             ],
             [
-                InlineKeyboardButton(text=UserDataExpectedMessages.EDIT_WEIGHT_DATA, callback_data=EditDataCallback(fields='weight').pack()),
+                InlineKeyboardButton(text=UserDataExpectedMessages.EDIT_WEIGHT_DATA, callback_data=EditDataCallback(fields='body_weight').pack()),
                 InlineKeyboardButton(text=UserDataExpectedMessages.EDIT_BONE_MARROW_TYPING_AGREEMENT_DATA, callback_data=EditDataCallback(fields='bone_marrow_typing_agreement').pack())
             ],
             [
