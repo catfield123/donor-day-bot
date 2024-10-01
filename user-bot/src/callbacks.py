@@ -8,3 +8,9 @@ class ChooseDonationDatetimeCallback(CallbackData, prefix="donation_datetime", s
     id: int
     place_id: int
     datetime: str
+
+class EditDataCallback(CallbackData, prefix="edit"):
+    fields: str
+
+class AllDataIsCorrectCallback(CallbackData, prefix="all_data_is_correct"):
+    pass
