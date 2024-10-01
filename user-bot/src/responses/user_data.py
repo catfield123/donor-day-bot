@@ -1,4 +1,5 @@
 from common.utils import escape_markdown_v2
+from expected_messages.user_data import UserDataExpectedMessages
 
 class UserDataResponses:
     ASK_FOR_NAME = "Пожалуйста, введите ваше имя\."
@@ -159,7 +160,7 @@ class UserDataResponses:
 
     YOUR_DATA_IS_SAVED = (
         "Ваши данные были успешно сохранены\.\n"
-        "Если вы хотите изменить какие\-либо данные, введите команду /edit\_data или введите текст \"`Изменить данные`\"\.\n\n"
+        f"Если вы хотите изменить какие\-либо данные, введите команду /edit\_data или введите текст \"`{UserDataExpectedMessages.EDIT_DATA}`\"\.\n\n"
         "За несколько дней до выбранной даты участия акции наш волонтёр позвонит вам для подтверждения вашего участия\.\n\n"
         "Пожалуйста\, следите за ботом\, чтобы не пропустить полезную информацию об Акции\."
     )
