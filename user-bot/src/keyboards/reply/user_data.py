@@ -110,7 +110,7 @@ class UserDataReplyKeyboard:
 
     @staticmethod
     def generate_choose_faculty_keyboard(db: Session) -> ReplyKeyboardMarkup:
-        faculty_names = db_get_faculties_names(db)
+        faculty_names = [faculty.name for faculty in db_get_faculties_names(db)] 
 
         keyboard_buttons = []
         for i in range(0, len(faculty_names) - 1, 2):
