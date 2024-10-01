@@ -527,7 +527,7 @@ async def recheck_data(query: CallbackQuery, state: FSMContext):
     await state.set_state(UserDataStates.all_data_is_collected)
 
 
-# @user_data_router.message(UserDataStates.all_data_is_collected, Command('edit_data'))
-# async def edit_data(message: Message, state: FSMContext):
-#     await message.answer(UserDataResponses.get_recheck_data_text(), reply_markup=UserDataInlineKeyboard.edit_data_keyboard)
-#     await state.set_state(UserDataStates.recheck_data)
+@user_data_router.message(UserDataStates.all_data_is_collected, Command('edit_data'))
+async def edit_data(message: Message, state: FSMContext):
+    await message.answer(UserDataResponses.get_recheck_data_text(), reply_markup=UserDataInlineKeyboard.edit_data_keyboard)
+    await state.set_state(UserDataStates.recheck_data)
