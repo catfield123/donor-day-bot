@@ -128,8 +128,3 @@ async def cancel(message: Message, state: FSMContext, db: Session):
     await message.answer(UserDataResponses.ASK_FOR_DONATION_PLACE, reply_markup=UserDataInlineKeyboard.get_choose_donation_place_keyboard(db), )
     await state.set_state(UserDataStates.waiting_for_donation_place)
 
-@user_data_db_required_router.message(UserDataStates.confirm_donation_datetime, ConfirmEnteredData())
-async def confirm_data(message: Message, state: FSMContext, db: Session):
-    await message.answer(UserDataResponses.DATA_IS_WRITTEN, reply_markup=common.keyboards.remove_keyboard)
-    await message.answer(UserDataResponses.get_recheck_data_text(), reply_markup=UserDataInlineKeyboard.edit_data_keyboard)
-    await state.set_state(UserDataStates.recheck_data)
