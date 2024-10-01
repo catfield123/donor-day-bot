@@ -67,3 +67,5 @@ class UserDataStates(StatesGroup):
     confirm_donation_datetime = State()
 
     recheck_data = State()
+
+    all_data_is_collected = State()
