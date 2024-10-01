@@ -63,9 +63,8 @@ class UserRecheckData(BaseModel):
     patronymic: str | None = None
     @property
     def full_name(self) -> str:
-        if self.patronymic:
-            return f"{self.surname} {self.name} {self.patronymic}"
-        return f"{self.surname} {self.name}"
+        patronymic = self.patronymic if self.patronymic else "(отчества нет)"
+        return f"{self.surname} {self.name} {patronymic}"
 
     phone_number: str
     email: str
