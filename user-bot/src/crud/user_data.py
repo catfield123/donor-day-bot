@@ -2,13 +2,13 @@
 from sqlalchemy.orm import Session
 from common.models import DonationDatetime, Faculty, DonationPlace
 
-from schemas import DonationDatetimesDbResponse, DonationPlaceDbResponse
+from schemas import DonationDatetimesDbResponse, DonationPlaceDbResponse, FacultyDbResponse
 
 from functools import lru_cache
 
 @lru_cache
-def db_get_faculties_names(db: Session):
-    return [faculty.name for faculty in db.query(Faculty).all()]
+def db_get_faculties_names(db: Session) -> list[FacultyDbResponse]:
+    return [FacultyDbResponse(id=faculty.id, name=faculty.name) for faculty in db.query(Faculty).all()]
 
 @lru_cache
 def db_get_donation_places(db: Session) -> list[DonationPlaceDbResponse]:
