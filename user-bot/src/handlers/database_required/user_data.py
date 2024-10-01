@@ -37,20 +37,24 @@ async def confirm_data(message: Message, state: FSMContext, db: Session):
 
 @user_data_db_required_router.message(UserDataStates.waiting_for_faculty)
 async def process_faculty(message: Message, state: FSMContext, db: Session):
-    faculty = message.text
-    if faculty not in db_get_faculties_names(db):
+    faculty_name = message.text
+    correct_faculties = {faculty.name: faculty.id for faculty in db_get_faculties_names(db)}
+    if faculty_name not in correct_faculties:
         await message.answer(UserDataResponses.WRONG_FACULTY_NAME)
         await message.answer(UserDataResponses.ASK_FOR_FACULTY, reply_markup=UserDataReplyKeyboard.generate_choose_faculty_keyboard(db))
         await state.set_state(UserDataStates.waiting_for_faculty)
     else:
+        faculty_id = correct_faculties[faculty_name]
         await state.update_data(faculty=message.text)
-        await message.answer(UserDataResponses.get_confirm_faculty_text(faculty), reply_markup=UserDataReplyKeyboard.confirmation_keyboard)
+        await state.update_data(faculty_id=faculty_id)
+        await message.answer(UserDataResponses.get_confirm_faculty_text(faculty_name), reply_markup=UserDataReplyKeyboard.confirmation_keyboard)
         await state.set_state(UserDataStates.confirm_faculty)
 
 
 @user_data_db_required_router.message(UserDataStates.confirm_faculty, ReenterData())
 async def cancel(message: Message, state: FSMContext, db: Session):
     await state.update_data(faculty=None)
+    await state.update_data(faculty_id=None)
     await message.answer(UserDataResponses.ASK_FOR_FACULTY, reply_markup=UserDataReplyKeyboard.generate_choose_faculty_keyboard(db))
     await state.set_state(UserDataStates.waiting_for_faculty)
 
