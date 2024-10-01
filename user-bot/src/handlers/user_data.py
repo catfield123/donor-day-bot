@@ -368,9 +368,9 @@ async def confirm_data(message: Message, state: FSMContext):
 
 @user_data_router.message(UserDataStates.waiting_for_passport_issued_date)
 async def process_passport_issued_date(message: Message, state: FSMContext):
-    passport_issued_date = message.text
-    await state.update_data(passport_issued_date=message.text)
-    await message.answer(UserDataResponses.get_confirm_passport_issued_date_text(passport_issued_date), reply_markup=UserDataReplyKeyboard.confirmation_keyboard)
+    passport_issued_date_text = message.text
+    await state.update_data(passport_issued_date=passport_issued_date_text)
+    await message.answer(UserDataResponses.get_confirm_passport_issued_date_text(passport_issued_date_text), reply_markup=UserDataReplyKeyboard.confirmation_keyboard)
     await state.set_state(UserDataStates.confirm_passport_issued_date)
 
 
@@ -410,9 +410,9 @@ async def confirm_data(message: Message, state: FSMContext):
 
 @user_data_router.message(UserDataStates.waiting_for_birth_date)
 async def process_birth_date(message: Message, state: FSMContext):
-    birth_date = message.text
-    await state.update_data(birth_date=message.text)
-    await message.answer(UserDataResponses.get_confirm_birth_date_text(birth_date), reply_markup=UserDataReplyKeyboard.confirmation_keyboard)
+    birth_date_text = message.text
+    await state.update_data(birth_date=birth_date_text)
+    await message.answer(UserDataResponses.get_confirm_birth_date_text(birth_date_text), reply_markup=UserDataReplyKeyboard.confirmation_keyboard)
     await state.set_state(UserDataStates.confirm_birth_date)
 
 
