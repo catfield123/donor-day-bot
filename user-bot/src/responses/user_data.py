@@ -187,7 +187,7 @@ class UserDataResponses:
             f"{escape_markdown_v2(user_recheck_data.snils)}\n\n"
             "*__Данные паспорта\:__*\n"
             f"Паспорт выдан\: {escape_markdown_v2(user_recheck_data.passport_issued_by_full_text)}\n"
-            f"Дата рождения\: {escape_markdown_v2(user_recheck_data.passport_issued_date)}\n"
+            f"Дата рождения\: {escape_markdown_v2(user_recheck_data.birth_date)}\n"
             f"Место рождения\: {escape_markdown_v2(user_recheck_data.birth_place)}\n"
             f"Адрес регистрации\: {escape_markdown_v2(user_recheck_data.registration_address)}\n\n"
 
