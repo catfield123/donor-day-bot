@@ -514,6 +514,7 @@ async def cancel(message: Message, state: FSMContext):
 @user_data_router.message(UserDataStates.confirm_donation_datetime, ConfirmEnteredData())
 async def confirm_data(message: Message, state: FSMContext):
     await message.answer(UserDataResponses.DATA_IS_WRITTEN, reply_markup=common.keyboards.remove_keyboard)
+    state.update_data({"all_data_is_collected": True})
     await message.answer(UserDataResponses.get_recheck_data_text(), reply_markup=UserDataInlineKeyboard.edit_data_keyboard)
     await state.set_state(UserDataStates.recheck_data)
 
@@ -523,7 +524,6 @@ async def recheck_data(query: CallbackQuery, state: FSMContext):
     await query.answer()
     await query.message.edit_reply_markup(reply_markup=None)
     await query.message.answer(UserDataResponses.YOUR_DATA_IS_SAVED, reply_markup=common.keyboards.remove_keyboard)
-    state.update_data({"all_data_is_collected": True})
     await state.set_state(UserDataStates.all_data_is_collected)
 
 
