@@ -538,3 +538,104 @@ async def edit_data(message: Message, state: FSMContext):
     user_recheck_data = generate_user_recheck_data_from_state_data(state_data)
     await message.answer(UserDataResponses.get_recheck_data_text(user_recheck_data = user_recheck_data), reply_markup=UserDataInlineKeyboard.edit_data_keyboard)
     await state.set_state(UserDataStates.recheck_data)
+
+
+@user_data_router.callback_query(UserDataStates.recheck_data, EditDataCallback.filter(F.fields == "full_name"))
+async def edit_full_name(query: CallbackQuery, state: FSMContext):
+    await query.answer()
+    await query.message.edit_reply_markup(reply_markup=None)
+    state_data = await state.get_data()
+    name = state_data.get("name")
+    await query.message.answer(UserDataResponses.get_confirm_name_text(name), reply_markup=UserDataReplyKeyboard.confirmation_keyboard)
+    await state.set_state(UserDataStates.confirm_name)
+
+
+@user_data_router.callback_query(UserDataStates.recheck_data, EditDataCallback.filter(F.fields == "phone_number"))
+async def edit_full_name(query: CallbackQuery, state: FSMContext):
+    await query.answer()
+    await query.message.edit_reply_markup(reply_markup=None)
+    state_data = await state.get_data()
+    phone_number = state_data.get("phone_number")
+    await query.message.answer(UserDataResponses.get_confirm_phone_number_text(phone_number), reply_markup=UserDataReplyKeyboard.confirmation_keyboard)
+    await state.set_state(UserDataStates.confirm_process_phone_number)
+
+
+@user_data_router.callback_query(UserDataStates.recheck_data, EditDataCallback.filter(F.fields == "studying_place_info"))
+async def edit_full_name(query: CallbackQuery, state: FSMContext):
+    await query.answer()
+    await query.message.edit_reply_markup(reply_markup=None)
+    state_data = await state.get_data()
+    is_polytech_student = state_data.get("is_polytech_student")
+    await query.message.answer(UserDataResponses.get_confirm_is_polytech_student_text(is_polytech_student), reply_markup=UserDataReplyKeyboard.confirmation_keyboard)
+    await state.set_state(UserDataStates.confirm_is_polytech_student)
+
+
+@user_data_router.callback_query(UserDataStates.recheck_data, EditDataCallback.filter(F.fields == "inn"))
+async def edit_full_name(query: CallbackQuery, state: FSMContext):
+    await query.answer()
+    await query.message.edit_reply_markup(reply_markup=None)
+    state_data = await state.get_data()
+    inn = state_data.get("inn")
+    await query.message.answer(UserDataResponses.get_confirm_inn_text(inn), reply_markup=UserDataReplyKeyboard.confirmation_keyboard)
+    await state.set_state(UserDataStates.confirm_inn)
+
+
+@user_data_router.callback_query(UserDataStates.recheck_data, EditDataCallback.filter(F.fields == "snils"))
+async def edit_full_name(query: CallbackQuery, state: FSMContext):
+    await query.answer()
+    await query.message.edit_reply_markup(reply_markup=None)
+    state_data = await state.get_data()
+    snils = state_data.get("snils")
+    await query.message.answer(UserDataResponses.get_confirm_snils_text(snils), reply_markup=UserDataReplyKeyboard.confirmation_keyboard)
+    await state.set_state(UserDataStates.confirm_snils)
+
+
+@user_data_router.callback_query(UserDataStates.recheck_data, EditDataCallback.filter(F.fields == "passport_data"))
+async def edit_full_name(query: CallbackQuery, state: FSMContext):
+    await query.answer()
+    await query.message.edit_reply_markup(reply_markup=None)
+    state_data = await state.get_data()
+    passport_series = state_data.get("passport_series")
+    await query.message.answer(UserDataResponses.get_confirm_passport_series_text(passport_series), reply_markup=UserDataReplyKeyboard.confirmation_keyboard)
+    await state.set_state(UserDataStates.confirm_passport_series)
+
+
+@user_data_router.callback_query(UserDataStates.recheck_data, EditDataCallback.filter(F.fields == "sex"))
+async def edit_full_name(query: CallbackQuery, state: FSMContext):
+    await query.answer()
+    await query.message.edit_reply_markup(reply_markup=None)
+    state_data = await state.get_data()
+    sex = state_data.get("sex")
+    await query.message.answer(UserDataResponses.get_confirm_sex_text(sex), reply_markup=UserDataReplyKeyboard.confirmation_keyboard)
+    await state.set_state(UserDataStates.confirm_sex)
+
+
+@user_data_router.callback_query(UserDataStates.recheck_data, EditDataCallback.filter(F.fields == "weight"))
+async def edit_full_name(query: CallbackQuery, state: FSMContext):
+    await query.answer()
+    await query.message.edit_reply_markup(reply_markup=None)
+    state_data = await state.get_data()
+    body_weight = state_data.get("body_weight")
+    await query.message.answer(UserDataResponses.get_confirm_body_weight_text(body_weight), reply_markup=UserDataReplyKeyboard.confirmation_keyboard)
+    await state.set_state(UserDataStates.confirm_body_weight)
+
+
+@user_data_router.callback_query(UserDataStates.recheck_data, EditDataCallback.filter(F.fields == "bone_marrow_typing_agreement"))
+async def edit_full_name(query: CallbackQuery, state: FSMContext):
+    await query.answer()
+    await query.message.edit_reply_markup(reply_markup=None)
+    state_data = await state.get_data()
+    bone_marrow_typing_agreement = state_data.get("bone_marrow_typing_agreement")
+    await query.message.answer(UserDataResponses.get_confirm_bone_marrow_typing_agreement_text(bone_marrow_typing_agreement), reply_markup=UserDataReplyKeyboard.confirmation_keyboard)
+    await state.set_state(UserDataStates.confirm_bone_marrow_typing_agreement)
+
+
+@user_data_router.callback_query(UserDataStates.recheck_data, EditDataCallback.filter(F.fields == "donation_place_and_datetime"))
+async def edit_full_name(query: CallbackQuery, state: FSMContext):
+    await query.answer()
+    await query.message.edit_reply_markup(reply_markup=None)
+    state_data = await state.get_data()
+    donation_place = state_data.get("donation_place")
+    await query.message.answer(UserDataResponses.get_confirm_donation_place_text(donation_place), reply_markup=UserDataReplyKeyboard.confirmation_keyboard)
+    await state.set_state(UserDataStates.confirm_donation_place)
+
