@@ -2,7 +2,7 @@ from aiogram import Router, F
 from aiogram.types import Message
 from aiogram.fsm.context import FSMContext
 from aiogram.filters import Command
-from common.middleware import DatabaseMiddleware
+from aiogram.types.callback_query import CallbackQuery
 
 
 from keyboards.reply.user_data import UserDataReplyKeyboard
@@ -11,6 +11,7 @@ from states.user_data import UserDataStates
 import keyboards
 from responses.user_data import UserDataResponses
 from expected_messages.user_data import UserDataExpectedMessages
+from callbacks import AllDataIsCorrectCallback, EditDataCallback
 
 from filters import ReenterData, ConfirmEnteredData, AllowedAnswers
 
@@ -508,3 +509,25 @@ async def cancel(message: Message, state: FSMContext):
 
 # after confirming bone_marrow_typing_agreement need to call db to get donation place datetimes
 # so confirming is located in database_required/user_data.pys
+
+
+@user_data_router.message(UserDataStates.confirm_donation_datetime, ConfirmEnteredData())
+async def confirm_data(message: Message, state: FSMContext):
+    await message.answer(UserDataResponses.DATA_IS_WRITTEN, reply_markup=common.keyboards.remove_keyboard)
+    await message.answer(UserDataResponses.get_recheck_data_text(), reply_markup=UserDataInlineKeyboard.edit_data_keyboard)
+    await state.set_state(UserDataStates.recheck_data)
+
+
+@user_data_router.callback_query(UserDataStates.recheck_data, AllDataIsCorrectCallback.filter())
+async def recheck_data(query: CallbackQuery, state: FSMContext):
+    await query.answer()
+    await query.message.edit_reply_markup(reply_markup=None)
+    await query.message.answer(UserDataResponses.YOUR_DATA_IS_SAVED, reply_markup=common.keyboards.remove_keyboard)
+    state.update_data({"all_data_is_collected": True})
+    await state.set_state(UserDataStates.all_data_is_collected)
+
+
+# @user_data_router.message(UserDataStates.all_data_is_collected, Command('edit_data'))
+# async def edit_data(message: Message, state: FSMContext):
+#     await message.answer(UserDataResponses.get_recheck_data_text(), reply_markup=UserDataInlineKeyboard.edit_data_keyboard)
+#     await state.set_state(UserDataStates.recheck_data)
