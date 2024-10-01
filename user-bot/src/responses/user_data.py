@@ -1,4 +1,5 @@
 from common.utils import escape_markdown_v2
+from schemas import UserRecheckData
 from expected_messages.user_data import UserDataExpectedMessages
 
 class UserDataResponses:
@@ -152,8 +153,62 @@ class UserDataResponses:
 
 
     @staticmethod
-    def get_recheck_data_text() -> str:
-        return "Пожалуйста, проверьте правильность введенных данных\."
+    def get_recheck_data_text(user_recheck_data : UserRecheckData) -> str:
+        response = (
+            "Пожалуйста\, проверьте правильность введенных данных\.\n\n"
+
+            "*__ФИО\:__*\n"
+            f"{escape_markdown_v2(user_recheck_data.full_name)}\n\n"
+
+            "*__Номер телефона\:__*\n"
+            f"{escape_markdown_v2(user_recheck_data.phone_number)}\n\n"
+
+            "*__Адрес электронной почты\:__*\n"
+            f"{escape_markdown_v2(user_recheck_data.email)}\n\n"
+
+            "*__Данные о месте обучения\:__*\n"
+            "Студент политеха\: " + ("Да" if user_recheck_data.is_polytech_student else "Нет") + "\n"
+        )
+
+        if user_recheck_data.is_polytech_student:
+            response += (
+                "Номер зачётной книжки\: " + (escape_markdown_v2(user_recheck_data.grade_book_number) if user_recheck_data.grade_book_number else "Не указан") + "\n"
+                f"Номер группы\: {escape_markdown_v2(user_recheck_data.group_number)}\n"
+                f"Институт\: {escape_markdown_v2(user_recheck_data.faculty)}\n"
+                f"Источник финансирования\: {escape_markdown_v2(user_recheck_data.founding_source.value)}\n\n"
+            )
+        else:
+            response += '\n'
+
+        response += (
+            "*__ИНН\:__*\n"
+            f"{escape_markdown_v2(user_recheck_data.inn)}\n\n"
+            "*__СНИЛС\:__*\n"
+            f"{escape_markdown_v2(user_recheck_data.snils)}\n\n"
+            "*__Данные паспорта\:__*\n"
+            f"Паспорт выдан\: {escape_markdown_v2(user_recheck_data.passport_issued_by_full_text)}\n"
+            f"Дата рождения\: {escape_markdown_v2(user_recheck_data.passport_issued_date)}\n"
+            f"Место рождения\: {escape_markdown_v2(user_recheck_data.birth_place)}\n"
+            f"Адрес регистрации\: {escape_markdown_v2(user_recheck_data.registration_address)}\n\n"
+
+            "*__Пол\:__*\n"
+            f"{escape_markdown_v2(user_recheck_data.sex.value)}\n\n"
+
+            "*__Вес\:__*\n"
+            f"{escape_markdown_v2(user_recheck_data.body_weight.value)}\n\n"
+
+            "*__Согласие на типирование костного мозга\:__*\n"
+            "" + ("Да" if user_recheck_data.bone_marrow_typing_agreement else "Нет") + "\n\n"
+
+            "*__Место и время участия в акции\:__*\n"
+            f"{escape_markdown_v2(user_recheck_data.donation_place)}\n"
+            f"{escape_markdown_v2(user_recheck_data.donation_datetime)}\n\n"
+        )
+
+        response += escape_markdown_v2("Если какие-то данные не верны, нажмите на соответствующую кнопку, чтобы их изменить.")
+
+        return response
+        
     
     DATA_IS_WRITTEN = "Данные успешно записаны\."
     ENTER_NEW_DATA = "Укажите новые данные\."

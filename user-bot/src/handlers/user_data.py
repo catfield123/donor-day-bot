@@ -13,6 +13,8 @@ from responses.user_data import UserDataResponses
 from expected_messages.user_data import UserDataExpectedMessages
 from callbacks import AllDataIsCorrectCallback, EditDataCallback
 
+
+from utils import generate_user_recheck_data_from_state_data
 from filters import ReenterData, ConfirmEnteredData, AllowedAnswers
 
 
@@ -515,7 +517,9 @@ async def cancel(message: Message, state: FSMContext):
 async def confirm_data(message: Message, state: FSMContext):
     await message.answer(UserDataResponses.DATA_IS_WRITTEN, reply_markup=common.keyboards.remove_keyboard)
     state.update_data({"all_data_is_collected": True})
-    await message.answer(UserDataResponses.get_recheck_data_text(), reply_markup=UserDataInlineKeyboard.edit_data_keyboard)
+    state_data = await state.get_data()
+    user_recheck_data = generate_user_recheck_data_from_state_data(state_data)
+    await message.answer(UserDataResponses.get_recheck_data_text(user_recheck_data = user_recheck_data), reply_markup=UserDataInlineKeyboard.edit_data_keyboard)
     await state.set_state(UserDataStates.recheck_data)
 
 
@@ -530,5 +534,7 @@ async def recheck_data(query: CallbackQuery, state: FSMContext):
 @user_data_router.message(UserDataStates.all_data_is_collected, AllowedAnswers(UserDataExpectedMessages.EDIT_DATA))
 @user_data_router.message(UserDataStates.all_data_is_collected, Command('edit_data'))
 async def edit_data(message: Message, state: FSMContext):
-    await message.answer(UserDataResponses.get_recheck_data_text(), reply_markup=UserDataInlineKeyboard.edit_data_keyboard)
+    state_data = await state.get_data()
+    user_recheck_data = generate_user_recheck_data_from_state_data(state_data)
+    await message.answer(UserDataResponses.get_recheck_data_text(user_recheck_data = user_recheck_data), reply_markup=UserDataInlineKeyboard.edit_data_keyboard)
     await state.set_state(UserDataStates.recheck_data)
