@@ -9,9 +9,9 @@ class UserCreate(UserBase):
     email: EmailStr
 
     is_polytech_student : bool
-    grade_book_number : str = None
-    group_number : str = None
-    faculty_id : int = None
+    grade_book_number : str | None= None
+    group_number : str | None= None
+    faculty_id : int | None = None
     founding_source : FoundingSourceEnum | None = None
 
     inn : str
