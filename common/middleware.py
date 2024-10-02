@@ -1,4 +1,4 @@
-from typing import Any, Awaitable, Callable
+from typing import Any, Awaitable, Callable, Union
 from aiogram import BaseMiddleware, types
 from common.db import SessionLocal
 from sqlalchemy.exc import SQLAlchemyError
@@ -11,7 +11,7 @@ class DatabaseMiddleware(BaseMiddleware):
     async def __call__(
         self,
         handler: Callable[[types.Message, dict], Awaitable[Any]],
-        event: types.Message,
+        event: Union[types.Message, types.CallbackQuery],
         data: dict
     ) -> Any:
         try:
