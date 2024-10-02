@@ -36,6 +36,18 @@ class UserCreate(UserBase):
 
     donor_status : DonorStatusEnum = DonorStatusEnum.not_specified
 
+    @field_validator("passport_issued_date", mode="before")
+    def validate_passport_issued_date(cls, value):
+        return datetime.strptime(value, "%d.%m.%Y").date()
+
+    @field_validator("birth_date", mode="before")
+    def validate_birth_date(cls, value):
+        return datetime.strptime(value, "%d.%m.%Y").date()
+    
+
+class UserUpdate(UserCreate):
+    id : int
+
 class UserShow(UserCreate): 
     id : int
 
