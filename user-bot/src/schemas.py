@@ -31,8 +31,8 @@ class UserCreate(UserBase):
     body_weight : BodyWeightEnum
     bone_marrow_typing_agreement : bool
 
-    donation_place : str
-    donation_datetime : datetime
+    donation_place_id : int
+    donation_datetime_id : int
 
     donor_status : DonorStatusEnum = DonorStatusEnum.not_specified
 
