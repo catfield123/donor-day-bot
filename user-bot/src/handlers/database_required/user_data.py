@@ -3,7 +3,7 @@ from aiogram.types import Message
 from aiogram.types.callback_query import CallbackQuery
 from aiogram.fsm.context import FSMContext
 from aiogram.filters import Command
-from callbacks import ChooseDonationDatetimeCallback, ChooseDonationPlaceCallback
+from callbacks import AllDataIsCorrectCallback, ChooseDonationDatetimeCallback, ChooseDonationPlaceCallback
 from common.middleware import DatabaseMiddleware
 
 
@@ -17,7 +17,8 @@ from expected_messages.user_data import UserDataExpectedMessages
 
 from filters import ReenterData, ConfirmEnteredData, ReenterPlaceAndDatetime
 
-from crud.user_data import db_get_faculties_names
+from crud.user_data import db_get_faculties_names, db_add_user, db_update_user
+from schemas import UserCreate, UserUpdate
 from utils import generate_user_recheck_data_from_state_data
 
 import common.keyboards
@@ -26,6 +27,7 @@ from common.states import IdleStates
 user_data_db_required_router = Router()
 
 user_data_db_required_router.message.middleware(DatabaseMiddleware())
+user_data_db_required_router.callback_query.middleware(DatabaseMiddleware())
 
 
 # FACULTY HANDLING
@@ -149,3 +151,18 @@ async def cancel(message: Message, state: FSMContext, db: Session):
     await message.answer(UserDataResponses.ASK_FOR_DONATION_PLACE, reply_markup=UserDataInlineKeyboard.get_choose_donation_place_keyboard(db), )
     await state.set_state(UserDataStates.waiting_for_donation_place)
 
+
+
+@user_data_db_required_router.callback_query(UserDataStates.recheck_data, AllDataIsCorrectCallback.filter())
+async def recheck_data(query: CallbackQuery, state: FSMContext, db: Session):
+    state_data = await state.get_data()
+    if not state_data.get('id'):
+        db_user = db_add_user(db, UserCreate(telegram_id=query.from_user.id, **state_data))
+        db_user_id = db_user.id
+        await state.update_data({'id': db_user_id})
+    else:
+        db_update_user(db, UserUpdate(telegram_id=query.from_user.id, **state_data))
+    await query.answer()
+    await query.message.edit_reply_markup(reply_markup=None)
+    await query.message.answer(UserDataResponses.YOUR_DATA_IS_SAVED, reply_markup=common.keyboards.remove_keyboard)
+    await state.set_state(UserDataStates.all_data_is_collected)
