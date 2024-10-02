@@ -6,7 +6,7 @@ from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from aiogram.filters import CommandStart, ExceptionTypeFilter
-from aiogram.types import Message
+from aiogram.types import Message, CallbackQuery
 from aiogram import F
 from aiogram.types.error_event import ErrorEvent
 
@@ -31,9 +31,12 @@ from handlers.user_data import user_data_router
 dp.include_router(user_data_router)
 # dp.include_router(help_and_status_router)
 
-@dp.error(ExceptionTypeFilter(DatabaseConnectionError), F.update.message.as_("message"))
-async def handle_database_connection_error(event: ErrorEvent, message: Message):
-    await message.answer(BOT_IS_UNAVAILABLE_RESPONSE, reply_markup=remove_keyboard)
+@dp.error(ExceptionTypeFilter(DatabaseConnectionError), F.update.message.as_("message") | F.update.callback_query.as_("query"))
+async def handle_database_connection_error(event: ErrorEvent, message: Message | None = None, query: CallbackQuery | None = None):
+    if message:
+        await message.answer(BOT_IS_UNAVAILABLE_RESPONSE)
+    if query:
+        await query.message.answer(BOT_IS_UNAVAILABLE_RESPONSE)
 
 @dp.message(CommandStart())
 async def command_start_handler(message: Message, state: FSMContext) -> None:
