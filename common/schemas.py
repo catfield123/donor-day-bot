@@ -7,7 +7,7 @@ class UserBase(BaseModel):
     surname : str
     patronymic : str | None = None
 
-    @field_validator("name", mode="before")
+    @field_validator("telegram_id", mode="before")
     def validate_telegram_id(cls, value):
         if value:
             return str(value)
