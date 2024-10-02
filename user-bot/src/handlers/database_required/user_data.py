@@ -18,7 +18,7 @@ from expected_messages.user_data import UserDataExpectedMessages
 from filters import ReenterData, ConfirmEnteredData, ReenterPlaceAndDatetime
 
 from crud.user_data import db_get_faculties_names
-
+from utils import generate_user_recheck_data_from_state_data
 
 import common.keyboards
 from common.states import IdleStates
@@ -31,8 +31,14 @@ user_data_db_required_router.message.middleware(DatabaseMiddleware())
 # FACULTY HANDLING
 @user_data_db_required_router.message(UserDataStates.confirm_group_number, ConfirmEnteredData())
 async def confirm_data(message: Message, state: FSMContext, db: Session):
-    await message.answer(UserDataResponses.ASK_FOR_FACULTY, reply_markup=UserDataReplyKeyboard.generate_choose_faculty_keyboard(db))
-    await state.set_state(UserDataStates.waiting_for_faculty)
+    state_data = await state.get_data()
+    all_data_is_collected = state_data.get('all_data_is_collected')
+    if all_data_is_collected:
+        await message.answer(UserDataResponses.get_confirm_faculty_text(state_data.get('faculty')), reply_markup=UserDataReplyKeyboard.confirmation_keyboard)
+        await state.set_state(UserDataStates.confirm_faculty)
+    else:
+        await message.answer(UserDataResponses.ASK_FOR_FACULTY, reply_markup=UserDataReplyKeyboard.generate_choose_faculty_keyboard(db))
+        await state.set_state(UserDataStates.waiting_for_faculty)
 
 
 @user_data_db_required_router.message(UserDataStates.waiting_for_faculty)
@@ -64,9 +70,15 @@ async def cancel(message: Message, state: FSMContext, db: Session):
 
 @user_data_db_required_router.message(UserDataStates.confirm_bone_marrow_typing_agreement, ConfirmEnteredData())
 async def confirm_data(message: Message, state: FSMContext, db: Session):
+    state_data = await state.get_data()
+    all_data_is_collected = state_data.get('all_data_is_collected')
     await message.answer(UserDataResponses.DATA_IS_WRITTEN, reply_markup=common.keyboards.remove_keyboard)
-    await message.answer(UserDataResponses.ASK_FOR_DONATION_PLACE, reply_markup=UserDataInlineKeyboard.get_choose_donation_place_keyboard(db))
-    await state.set_state(UserDataStates.waiting_for_donation_place)
+    if all_data_is_collected:
+        await message.answer(UserDataResponses.get_recheck_data_text(generate_user_recheck_data_from_state_data(state_data)), reply_markup=UserDataInlineKeyboard.edit_data_keyboard)
+        await state.set_state(UserDataStates.recheck_data)
+    else:
+        await message.answer(UserDataResponses.ASK_FOR_DONATION_PLACE, reply_markup=UserDataInlineKeyboard.get_choose_donation_place_keyboard(db))
+        await state.set_state(UserDataStates.waiting_for_donation_place)
 
 
 @user_data_db_required_router.callback_query(UserDataStates.waiting_for_donation_place, ChooseDonationPlaceCallback.filter())
@@ -93,10 +105,15 @@ async def cancel(message: Message, state: FSMContext, db: Session):
 @user_data_db_required_router.message(UserDataStates.confirm_donation_place, ConfirmEnteredData())
 async def confirm_data(message: Message, state: FSMContext, db: Session):
     state_data = await state.get_data()
-    donation_place_id = state_data.get('donation_place_id')
+    all_data_is_collected = state_data.get('all_data_is_collected')
     await message.answer(UserDataResponses.DATA_IS_WRITTEN, reply_markup=common.keyboards.remove_keyboard)
-    await message.answer(UserDataResponses.ASK_FOR_DONATION_DATETIME, reply_markup=UserDataInlineKeyboard.get_choose_donation_datetime_keyboard(db, donation_place_id))
-    await state.set_state(UserDataStates.waiting_for_donation_datetime)
+    if all_data_is_collected and state_data.get('donation_datetime') is not None:
+        await message.answer(UserDataResponses.get_confirm_donation_datetime_text(state_data.get('donation_place'),state_data.get('donation_datetime')), reply_markup=UserDataReplyKeyboard.confirmation_keyboard)
+        await state.set_state(UserDataStates.confirm_donation_datetime)
+    else:
+        donation_place_id = state_data.get('donation_place_id')
+        await message.answer(UserDataResponses.ASK_FOR_DONATION_DATETIME, reply_markup=UserDataInlineKeyboard.get_choose_donation_datetime_keyboard(db, donation_place_id))
+        await state.set_state(UserDataStates.waiting_for_donation_datetime)
 
 @user_data_db_required_router.callback_query(UserDataStates.waiting_for_donation_datetime, ChooseDonationDatetimeCallback.filter())
 async def process_donation_datetime(query: CallbackQuery, state: FSMContext, callback_data: ChooseDonationDatetimeCallback):

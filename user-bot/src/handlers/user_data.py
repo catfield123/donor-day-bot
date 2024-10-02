@@ -51,8 +51,14 @@ async def cancel(message: Message, state: FSMContext):
 
 @user_data_router.message(UserDataStates.confirm_name, ConfirmEnteredData())
 async def confirm_data(message: Message, state: FSMContext):
-    await message.answer(UserDataResponses.ASK_FOR_SURNAME, reply_markup=common.keyboards.remove_keyboard)
-    await state.set_state(UserDataStates.waiting_for_surname)
+    state_data = await state.get_data()
+    all_data_is_collected = state_data.get('all_data_is_collected')
+    if all_data_is_collected:
+        await message.answer(UserDataResponses.get_confirm_surname_text(state_data.get('surname')), reply_markup=UserDataReplyKeyboard.confirmation_keyboard)
+        await state.set_state(UserDataStates.confirm_surname)
+    else:
+        await message.answer(UserDataResponses.ASK_FOR_SURNAME, reply_markup=common.keyboards.remove_keyboard)
+        await state.set_state(UserDataStates.waiting_for_surname)
 
 
 @user_data_router.message(UserDataStates.waiting_for_surname)
@@ -72,8 +78,14 @@ async def cancel(message: Message, state: FSMContext):
 
 @user_data_router.message(UserDataStates.confirm_surname, ConfirmEnteredData())
 async def confirm_data(message: Message, state: FSMContext):
-    await message.answer(UserDataResponses.ASK_FOR_PATRONIMYC, reply_markup=UserDataReplyKeyboard.i_have_no_patronymic_keyboard)
-    await state.set_state(UserDataStates.waiting_for_patronymic)
+    state_data = await state.get_data()
+    all_data_is_collected = state_data.get('all_data_is_collected')
+    if all_data_is_collected:
+        await message.answer(UserDataResponses.get_confirm_patronymic_text(state_data.get('patronymic')), reply_markup=UserDataReplyKeyboard.confirmation_keyboard)
+        await state.set_state(UserDataStates.confirm_patronymic)
+    else:
+        await message.answer(UserDataResponses.ASK_FOR_PATRONIMYC, reply_markup=UserDataReplyKeyboard.i_have_no_patronymic_keyboard)
+        await state.set_state(UserDataStates.waiting_for_patronymic)
 
 
 @user_data_router.message(UserDataStates.waiting_for_patronymic)
@@ -95,8 +107,14 @@ async def cancel(message: Message, state: FSMContext):
 
 @user_data_router.message(UserDataStates.confirm_patronymic, ConfirmEnteredData())
 async def confirm_data(message: Message, state: FSMContext):
-    await message.answer(UserDataResponses.ASK_FOR_SEX, reply_markup=UserDataReplyKeyboard.generate_choose_sex_keyboard())
-    await state.set_state(UserDataStates.waiting_for_sex)
+    state_data = await state.get_data()
+    all_data_is_collected = state_data.get('all_data_is_collected')
+    if all_data_is_collected:
+        await message.answer(UserDataResponses.get_recheck_data_text(generate_user_recheck_data_from_state_data(state_data)), reply_markup=UserDataInlineKeyboard.edit_data_keyboard)
+        await state.set_state(UserDataStates.recheck_data)
+    else:
+        await message.answer(UserDataResponses.ASK_FOR_SEX, reply_markup=UserDataReplyKeyboard.generate_choose_sex_keyboard())
+        await state.set_state(UserDataStates.waiting_for_sex)
 
 
 @user_data_router.message(UserDataStates.waiting_for_sex, AllowedAnswers(UserDataExpectedMessages.SEX_EXPECTED_MESSAGES))
@@ -116,8 +134,14 @@ async def cancel(message: Message, state: FSMContext):
 
 @user_data_router.message(UserDataStates.confirm_sex, ConfirmEnteredData())
 async def confirm_data(message: Message, state: FSMContext):
-    await message.answer(UserDataResponses.ASK_FOR_PHONE_NUMBER, reply_markup=common.keyboards.remove_keyboard)
-    await state.set_state(UserDataStates.waiting_for_phone_number)
+    state_data = await state.get_data()
+    all_data_is_collected = state_data.get('all_data_is_collected')
+    if all_data_is_collected:
+        await message.answer(UserDataResponses.get_recheck_data_text(generate_user_recheck_data_from_state_data(state_data)), reply_markup=UserDataInlineKeyboard.edit_data_keyboard)
+        await state.set_state(UserDataStates.recheck_data)
+    else:
+        await message.answer(UserDataResponses.ASK_FOR_PHONE_NUMBER, reply_markup=common.keyboards.remove_keyboard)
+        await state.set_state(UserDataStates.waiting_for_phone_number)
 
 
 
@@ -138,8 +162,14 @@ async def cancel(message: Message, state: FSMContext):
 
 @user_data_router.message(UserDataStates.confirm_phone_number, ConfirmEnteredData())
 async def confirm_data(message: Message, state: FSMContext):
-    await message.answer(UserDataResponses.ASK_FOR_EMAIL, reply_markup=common.keyboards.remove_keyboard)
-    await state.set_state(UserDataStates.waiting_for_email)
+    state_data = await state.get_data()
+    all_data_is_collected = state_data.get('all_data_is_collected')
+    if all_data_is_collected:
+        await message.answer(UserDataResponses.get_recheck_data_text(generate_user_recheck_data_from_state_data(state_data)), reply_markup=UserDataInlineKeyboard.edit_data_keyboard)
+        await state.set_state(UserDataStates.recheck_data)
+    else:
+        await message.answer(UserDataResponses.ASK_FOR_EMAIL, reply_markup=common.keyboards.remove_keyboard)
+        await state.set_state(UserDataStates.waiting_for_email)
 
 
 @user_data_router.message(UserDataStates.waiting_for_email)
@@ -159,8 +189,14 @@ async def cancel(message: Message, state: FSMContext):
 
 @user_data_router.message(UserDataStates.confirm_email, ConfirmEnteredData())
 async def confirm_data(message: Message, state: FSMContext):
-    await message.answer(UserDataResponses.ASK_FOR_IS_POLYTECH_STUDENT, reply_markup=UserDataReplyKeyboard.choose_is_polytech_student_keyboard)
-    await state.set_state(UserDataStates.waiting_for_is_polytech_student)
+    state_data = await state.get_data()
+    all_data_is_collected = state_data.get('all_data_is_collected')
+    if all_data_is_collected:
+        await message.answer(UserDataResponses.get_recheck_data_text(generate_user_recheck_data_from_state_data(state_data)), reply_markup=UserDataInlineKeyboard.edit_data_keyboard)
+        await state.set_state(UserDataStates.recheck_data)
+    else:
+        await message.answer(UserDataResponses.ASK_FOR_IS_POLYTECH_STUDENT, reply_markup=UserDataReplyKeyboard.choose_is_polytech_student_keyboard)
+        await state.set_state(UserDataStates.waiting_for_is_polytech_student)
 
 
 @user_data_router.message(UserDataStates.waiting_for_is_polytech_student, AllowedAnswers(UserDataExpectedMessages.POLYTECH_STUDENT_EXPECTED_MESSAGES))
@@ -182,12 +218,21 @@ async def cancel(message: Message, state: FSMContext):
 async def confirm_data(message: Message, state: FSMContext):
     state_data = await state.get_data()
     is_polytech_student = state_data.get("is_polytech_student")
+    all_data_is_collected = state_data.get('all_data_is_collected')
     if is_polytech_student:
-        await message.answer(UserDataResponses.ASK_FOR_GRADE_BOOK_NUMBER, reply_markup=UserDataReplyKeyboard.i_dont_remember_my_grade_book_number_keyboard)
-        await state.set_state(UserDataStates.waiting_for_grade_book_number)
+        if all_data_is_collected:
+            await message.answer(UserDataResponses.get_confirm_grade_book_number_text(state_data.get('grade_book_number')), reply_markup=UserDataReplyKeyboard.confirmation_keyboard)
+            await state.set_state(UserDataStates.confirm_grade_book_number)
+        else:
+            await message.answer(UserDataResponses.ASK_FOR_GRADE_BOOK_NUMBER, reply_markup=UserDataReplyKeyboard.i_dont_remember_my_grade_book_number_keyboard)
+            await state.set_state(UserDataStates.waiting_for_grade_book_number)
     else:
-        await message.answer(UserDataResponses.ASK_FOR_INN, reply_markup=UserDataReplyKeyboard.i_have_no_inn_keyboard)
-        await state.set_state(UserDataStates.waiting_for_inn)
+        if all_data_is_collected:
+            await message.answer(UserDataResponses.get_recheck_data_text(generate_user_recheck_data_from_state_data(state_data)), reply_markup=UserDataInlineKeyboard.edit_data_keyboard)
+            await state.set_state(UserDataStates.recheck_data)
+        else:
+            await message.answer(UserDataResponses.ASK_FOR_INN, reply_markup=UserDataReplyKeyboard.i_have_no_inn_keyboard)
+            await state.set_state(UserDataStates.waiting_for_inn)
 
 
 
@@ -210,8 +255,14 @@ async def cancel(message: Message, state: FSMContext):
 
 @user_data_router.message(UserDataStates.confirm_grade_book_number, ConfirmEnteredData())
 async def confirm_data(message: Message, state: FSMContext):
-    await message.answer(UserDataResponses.ASK_FOR_GROUP_NUMBER, reply_markup=common.keyboards.remove_keyboard)
-    await state.set_state(UserDataStates.waiting_for_group_number)
+    state_data = await state.get_data()
+    all_data_is_collected = state_data.get('all_data_is_collected')
+    if all_data_is_collected:
+        await message.answer(UserDataResponses.get_confirm_group_number_text(state_data.get('group_number')), reply_markup=UserDataReplyKeyboard.confirmation_keyboard)
+        await state.set_state(UserDataStates.confirm_group_number)
+    else:
+        await message.answer(UserDataResponses.ASK_FOR_GROUP_NUMBER, reply_markup=common.keyboards.remove_keyboard)
+        await state.set_state(UserDataStates.waiting_for_group_number)
 
 
 @user_data_router.message(UserDataStates.waiting_for_group_number)
@@ -234,8 +285,14 @@ async def cancel(message: Message, state: FSMContext):
 
 @user_data_router.message(UserDataStates.confirm_faculty, ConfirmEnteredData())
 async def confirm_data(message: Message, state: FSMContext):
-    await message.answer(UserDataResponses.ASK_FOR_FOUNDING_SOURCE, reply_markup=UserDataReplyKeyboard.generate_choose_founding_source_keyboard())
-    await state.set_state(UserDataStates.waiting_for_founding_source)
+    state_data = await state.get_data()
+    all_data_is_collected = state_data.get('all_data_is_collected')
+    if all_data_is_collected:
+        await message.answer(UserDataResponses.get_confirm_founding_source_text(state_data.get('founding_source')), reply_markup=UserDataReplyKeyboard.confirmation_keyboard)
+        await state.set_state(UserDataStates.confirm_founding_source)
+    else:
+        await message.answer(UserDataResponses.ASK_FOR_FOUNDING_SOURCE, reply_markup=UserDataReplyKeyboard.generate_choose_founding_source_keyboard())
+        await state.set_state(UserDataStates.waiting_for_founding_source)
 
 
 @user_data_router.message(UserDataStates.waiting_for_founding_source, AllowedAnswers(UserDataExpectedMessages.FOUNDING_SOURCE_EXPECTED_MESSAGES))
@@ -255,8 +312,14 @@ async def cancel(message: Message, state: FSMContext):
 
 @user_data_router.message(UserDataStates.confirm_founding_source, ConfirmEnteredData())
 async def confirm_data(message: Message, state: FSMContext):
-    await message.answer(UserDataResponses.ASK_FOR_INN, reply_markup=UserDataReplyKeyboard.i_have_no_inn_keyboard)
-    await state.set_state(UserDataStates.waiting_for_inn)
+    state_data = await state.get_data()
+    all_data_is_collected = state_data.get('all_data_is_collected')
+    if all_data_is_collected:
+        await message.answer(UserDataResponses.get_recheck_data_text(generate_user_recheck_data_from_state_data(state_data)), reply_markup=UserDataInlineKeyboard.edit_data_keyboard)
+        await state.set_state(UserDataStates.recheck_data)
+    else:
+        await message.answer(UserDataResponses.ASK_FOR_INN, reply_markup=UserDataReplyKeyboard.i_have_no_inn_keyboard)
+        await state.set_state(UserDataStates.waiting_for_inn)
 
 
 @user_data_router.message(UserDataStates.waiting_for_inn)
@@ -278,8 +341,14 @@ async def cancel(message: Message, state: FSMContext):
 
 @user_data_router.message(UserDataStates.confirm_inn, ConfirmEnteredData())
 async def confirm_data(message: Message, state: FSMContext):
-    await message.answer(UserDataResponses.ASK_FOR_SNILS, reply_markup=UserDataReplyKeyboard.i_have_no_snils_keyboard)
-    await state.set_state(UserDataStates.waiting_for_snils)
+    state_data = await state.get_data()
+    all_data_is_collected = state_data.get('all_data_is_collected')
+    if all_data_is_collected:
+        await message.answer(UserDataResponses.get_recheck_data_text(generate_user_recheck_data_from_state_data(state_data)), reply_markup=UserDataInlineKeyboard.edit_data_keyboard)
+        await state.set_state(UserDataStates.recheck_data)
+    else:
+        await message.answer(UserDataResponses.ASK_FOR_SNILS, reply_markup=UserDataReplyKeyboard.i_have_no_snils_keyboard)
+        await state.set_state(UserDataStates.waiting_for_snils)
 
 
 @user_data_router.message(UserDataStates.waiting_for_snils)
@@ -301,8 +370,14 @@ async def cancel(message: Message, state: FSMContext):
 
 @user_data_router.message(UserDataStates.confirm_snils, ConfirmEnteredData())
 async def confirm_data(message: Message, state: FSMContext):
-    await message.answer(UserDataResponses.ASK_FOR_PASSPORT_SERIES, reply_markup=common.keyboards.remove_keyboard)
-    await state.set_state(UserDataStates.waiting_for_passport_series)
+    state_data = await state.get_data()
+    all_data_is_collected = state_data.get('all_data_is_collected')
+    if all_data_is_collected:
+        await message.answer(UserDataResponses.get_recheck_data_text(generate_user_recheck_data_from_state_data(state_data)), reply_markup=UserDataInlineKeyboard.edit_data_keyboard)
+        await state.set_state(UserDataStates.recheck_data)
+    else:
+        await message.answer(UserDataResponses.ASK_FOR_PASSPORT_SERIES, reply_markup=common.keyboards.remove_keyboard)
+        await state.set_state(UserDataStates.waiting_for_passport_series)
 
 
 @user_data_router.message(UserDataStates.waiting_for_passport_series)
@@ -322,8 +397,14 @@ async def cancel(message: Message, state: FSMContext):
 
 @user_data_router.message(UserDataStates.confirm_passport_series, ConfirmEnteredData())
 async def confirm_data(message: Message, state: FSMContext):
-    await message.answer(UserDataResponses.ASK_FOR_PASSPORT_NUMBER, reply_markup=common.keyboards.remove_keyboard)
-    await state.set_state(UserDataStates.waiting_for_passport_number)
+    state_data = await state.get_data()
+    all_data_is_collected = state_data.get('all_data_is_collected')
+    if all_data_is_collected:
+        await message.answer(UserDataResponses.get_confirm_passport_number_text(state_data.get('passport_number')), reply_markup=UserDataReplyKeyboard.confirmation_keyboard)
+        await state.set_state(UserDataStates.confirm_passport_number)
+    else:
+        await message.answer(UserDataResponses.ASK_FOR_PASSPORT_NUMBER, reply_markup=common.keyboards.remove_keyboard)
+        await state.set_state(UserDataStates.waiting_for_passport_number)
 
 
 @user_data_router.message(UserDataStates.waiting_for_passport_number)
@@ -343,8 +424,14 @@ async def cancel(message: Message, state: FSMContext):
 
 @user_data_router.message(UserDataStates.confirm_passport_number, ConfirmEnteredData())
 async def confirm_data(message: Message, state: FSMContext):
-    await message.answer(UserDataResponses.ASK_FOR_PASSPORT_ISSUED_BY, reply_markup=common.keyboards.remove_keyboard)
-    await state.set_state(UserDataStates.waiting_for_passport_issued_by)
+    state_data = await state.get_data()
+    all_data_is_collected = state_data.get('all_data_is_collected')
+    if all_data_is_collected:
+        await message.answer(UserDataResponses.get_confirm_passport_issued_by_text(state_data.get('passport_issued_by')), reply_markup=UserDataReplyKeyboard.confirmation_keyboard)
+        await state.set_state(UserDataStates.confirm_passport_issued_by)
+    else:
+        await message.answer(UserDataResponses.ASK_FOR_PASSPORT_ISSUED_BY, reply_markup=common.keyboards.remove_keyboard)
+        await state.set_state(UserDataStates.waiting_for_passport_issued_by)
 
 
 @user_data_router.message(UserDataStates.waiting_for_passport_issued_by)
@@ -364,8 +451,14 @@ async def cancel(message: Message, state: FSMContext):
 
 @user_data_router.message(UserDataStates.confirm_passport_issued_by, ConfirmEnteredData())
 async def confirm_data(message: Message, state: FSMContext):
-    await message.answer(UserDataResponses.ASK_FOR_PASSPORT_ISSUED_DATE, reply_markup=common.keyboards.remove_keyboard)
-    await state.set_state(UserDataStates.waiting_for_passport_issued_date)
+    state_data = await state.get_data()
+    all_data_is_collected = state_data.get('all_data_is_collected')
+    if all_data_is_collected:
+        await message.answer(UserDataResponses.get_confirm_passport_issued_date_text(state_data.get('passport_issued_date')), reply_markup=UserDataReplyKeyboard.confirmation_keyboard)
+        await state.set_state(UserDataStates.confirm_passport_issued_date)
+    else:
+        await message.answer(UserDataResponses.ASK_FOR_PASSPORT_ISSUED_DATE, reply_markup=common.keyboards.remove_keyboard)
+        await state.set_state(UserDataStates.waiting_for_passport_issued_date)
 
 
 @user_data_router.message(UserDataStates.waiting_for_passport_issued_date)
@@ -385,8 +478,14 @@ async def cancel(message: Message, state: FSMContext):
 
 @user_data_router.message(UserDataStates.confirm_passport_issued_date, ConfirmEnteredData())
 async def confirm_data(message: Message, state: FSMContext):
-    await message.answer(UserDataResponses.ASK_FOR_PASSPORT_ISSUED_ORGANIZATION_CODE, reply_markup=common.keyboards.remove_keyboard)
-    await state.set_state(UserDataStates.waiting_for_passport_issued_organization_code)
+    state_data = await state.get_data()
+    all_data_is_collected = state_data.get('all_data_is_collected')
+    if all_data_is_collected:
+        await message.answer(UserDataResponses.get_confirm_passport_issued_organization_code_text(state_data.get('passport_issued_organization_code')), reply_markup=UserDataReplyKeyboard.confirmation_keyboard)
+        await state.set_state(UserDataStates.confirm_passport_issued_organization_code)
+    else:
+        await message.answer(UserDataResponses.ASK_FOR_PASSPORT_ISSUED_ORGANIZATION_CODE, reply_markup=common.keyboards.remove_keyboard)
+        await state.set_state(UserDataStates.waiting_for_passport_issued_organization_code)
 
 
 @user_data_router.message(UserDataStates.waiting_for_passport_issued_organization_code)
@@ -406,8 +505,14 @@ async def cancel(message: Message, state: FSMContext):
 
 @user_data_router.message(UserDataStates.confirm_passport_issued_organization_code, ConfirmEnteredData())
 async def confirm_data(message: Message, state: FSMContext):
-    await message.answer(UserDataResponses.ASK_FOR_BIRTH_DATE, reply_markup=common.keyboards.remove_keyboard)
-    await state.set_state(UserDataStates.waiting_for_birth_date)
+    state_data = await state.get_data()
+    all_data_is_collected = state_data.get('all_data_is_collected')
+    if all_data_is_collected:
+        await message.answer(UserDataResponses.get_confirm_birth_date_text(state_data.get('birth_date')), reply_markup=UserDataReplyKeyboard.confirmation_keyboard)
+        await state.set_state(UserDataStates.confirm_birth_date)
+    else:
+        await message.answer(UserDataResponses.ASK_FOR_BIRTH_DATE, reply_markup=common.keyboards.remove_keyboard)
+        await state.set_state(UserDataStates.waiting_for_birth_date)
 
 
 @user_data_router.message(UserDataStates.waiting_for_birth_date)
@@ -427,8 +532,14 @@ async def cancel(message: Message, state: FSMContext):
 
 @user_data_router.message(UserDataStates.confirm_birth_date, ConfirmEnteredData())
 async def confirm_data(message: Message, state: FSMContext):
-    await message.answer(UserDataResponses.ASK_FOR_BIRTH_PLACE, reply_markup=common.keyboards.remove_keyboard)
-    await state.set_state(UserDataStates.waiting_for_birth_place)
+    state_data = await state.get_data()
+    all_data_is_collected = state_data.get('all_data_is_collected')
+    if all_data_is_collected:
+        await message.answer(UserDataResponses.get_confirm_birth_place_text(state_data.get('birth_place')), reply_markup=UserDataReplyKeyboard.confirmation_keyboard)
+        await state.set_state(UserDataStates.confirm_birth_place)
+    else:
+        await message.answer(UserDataResponses.ASK_FOR_BIRTH_PLACE, reply_markup=common.keyboards.remove_keyboard)
+        await state.set_state(UserDataStates.waiting_for_birth_place)
 
 
 @user_data_router.message(UserDataStates.waiting_for_birth_place)
@@ -448,8 +559,14 @@ async def cancel(message: Message, state: FSMContext):
 
 @user_data_router.message(UserDataStates.confirm_birth_place, ConfirmEnteredData())
 async def confirm_data(message: Message, state: FSMContext):
-    await message.answer(UserDataResponses.ASK_FOR_REGISTRATION_ADDRESS, reply_markup=common.keyboards.remove_keyboard)
-    await state.set_state(UserDataStates.waiting_for_registration_address)
+    state_data = await state.get_data()
+    all_data_is_collected = state_data.get('all_data_is_collected')
+    if all_data_is_collected:
+        await message.answer(UserDataResponses.get_confirm_registration_address_text(state_data.get('registration_address')), reply_markup=UserDataReplyKeyboard.confirmation_keyboard)
+        await state.set_state(UserDataStates.confirm_registration_address)
+    else:
+        await message.answer(UserDataResponses.ASK_FOR_REGISTRATION_ADDRESS, reply_markup=common.keyboards.remove_keyboard)
+        await state.set_state(UserDataStates.waiting_for_registration_address)
 
 
 @user_data_router.message(UserDataStates.waiting_for_registration_address)
@@ -469,8 +586,14 @@ async def cancel(message: Message, state: FSMContext):
 
 @user_data_router.message(UserDataStates.confirm_registration_address, ConfirmEnteredData())
 async def confirm_data(message: Message, state: FSMContext):
-    await message.answer(UserDataResponses.ASK_FOR_BODY_WEIGHT, reply_markup=UserDataReplyKeyboard.generate_choose_body_weight_keyboard())
-    await state.set_state(UserDataStates.waiting_for_body_weight)
+    state_data = await state.get_data()
+    all_data_is_collected = state_data.get('all_data_is_collected')
+    if all_data_is_collected:
+        await message.answer(UserDataResponses.get_recheck_data_text(generate_user_recheck_data_from_state_data(state_data)), reply_markup=UserDataInlineKeyboard.edit_data_keyboard)
+        await state.set_state(UserDataStates.recheck_data)
+    else:    
+        await message.answer(UserDataResponses.ASK_FOR_BODY_WEIGHT, reply_markup=UserDataReplyKeyboard.generate_choose_body_weight_keyboard())
+        await state.set_state(UserDataStates.waiting_for_body_weight)
 
 
 @user_data_router.message(UserDataStates.waiting_for_body_weight, AllowedAnswers(UserDataExpectedMessages.BODY_WEIGHT_EXPECTED_MESSAGES))
@@ -490,8 +613,14 @@ async def cancel(message: Message, state: FSMContext):
 
 @user_data_router.message(UserDataStates.confirm_body_weight, ConfirmEnteredData())
 async def confirm_data(message: Message, state: FSMContext):
-    await message.answer(UserDataResponses.ASK_FOR_BONE_MARROW_TYPING_AGREEMENT, reply_markup=UserDataReplyKeyboard.choose_bone_marrow_typing_agreement_keyboard)
-    await state.set_state(UserDataStates.waiting_for_bone_marrow_typing_agreement)
+    state_data = await state.get_data()
+    all_data_is_collected = state_data.get('all_data_is_collected')
+    if all_data_is_collected:
+        await message.answer(UserDataResponses.get_recheck_data_text(generate_user_recheck_data_from_state_data(state_data)), reply_markup=UserDataInlineKeyboard.edit_data_keyboard)
+        await state.set_state(UserDataStates.recheck_data)
+    else:
+        await message.answer(UserDataResponses.ASK_FOR_BONE_MARROW_TYPING_AGREEMENT, reply_markup=UserDataReplyKeyboard.choose_bone_marrow_typing_agreement_keyboard)
+        await state.set_state(UserDataStates.waiting_for_bone_marrow_typing_agreement)
 
 
 @user_data_router.message(UserDataStates.waiting_for_bone_marrow_typing_agreement, AllowedAnswers(UserDataExpectedMessages.BONE_MARROW_TYPING_AGREEMENT_EXPECTED_MESSAGES))
@@ -557,7 +686,17 @@ async def edit_full_name(query: CallbackQuery, state: FSMContext):
     state_data = await state.get_data()
     phone_number = state_data.get("phone_number")
     await query.message.answer(UserDataResponses.get_confirm_phone_number_text(phone_number), reply_markup=UserDataReplyKeyboard.confirmation_keyboard)
-    await state.set_state(UserDataStates.confirm_process_phone_number)
+    await state.set_state(UserDataStates.confirm_phone_number)
+
+
+@user_data_router.callback_query(UserDataStates.recheck_data, EditDataCallback.filter(F.fields == "email"))
+async def edit_full_name(query: CallbackQuery, state: FSMContext):
+    await query.answer()
+    await query.message.edit_reply_markup(reply_markup=None)
+    state_data = await state.get_data()
+    email = state_data.get("email")
+    await query.message.answer(UserDataResponses.get_confirm_email_text(email), reply_markup=UserDataReplyKeyboard.confirmation_keyboard)
+    await state.set_state(UserDataStates.confirm_email)
 
 
 @user_data_router.callback_query(UserDataStates.recheck_data, EditDataCallback.filter(F.fields == "studying_place_info"))
@@ -610,7 +749,7 @@ async def edit_full_name(query: CallbackQuery, state: FSMContext):
     await state.set_state(UserDataStates.confirm_sex)
 
 
-@user_data_router.callback_query(UserDataStates.recheck_data, EditDataCallback.filter(F.fields == "weight"))
+@user_data_router.callback_query(UserDataStates.recheck_data, EditDataCallback.filter(F.fields == "body_weight"))
 async def edit_full_name(query: CallbackQuery, state: FSMContext):
     await query.answer()
     await query.message.edit_reply_markup(reply_markup=None)
