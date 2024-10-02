@@ -30,6 +30,10 @@ class Faculty(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable = False)
 
+
+def get_enum_values(enum_class: PyEnum):
+    return [member.value for member in enum_class]
+
 class User(Base):
     __tablename__ = 'user'
 
@@ -48,7 +52,7 @@ class User(Base):
     group_number = Column(String, nullable=True)
     faculty_id = Column(Integer, ForeignKey('faculty.id'), nullable=True)
     faculty = relationship("Faculty")
-    founding_source = Column(Enum(FoundingSourceEnum), name='founding_source', nullable=True)
+    founding_source = Column(Enum(FoundingSourceEnum, values_callable=get_enum_values), name='founding_source', nullable=True)
 
     inn = Column(String, nullable=False)
     snils = Column(String, nullable=False)
@@ -63,8 +67,8 @@ class User(Base):
     birth_place = Column(String, nullable=False)
     registration_address = Column(String, nullable=False)
 
-    sex = Column(Enum(SexEnum), name='sex', nullable=False)
-    body_weight = Column(Enum(BodyWeightEnum), name='body_weight', nullable=False)
+    sex = Column(Enum(SexEnum, values_callable=get_enum_values), name='sex', nullable=False)
+    body_weight = Column(Enum(BodyWeightEnum, values_callable=get_enum_values), name='body_weight', nullable=False)
 
     bone_marrow_typing_agreement = Column(Boolean, nullable=False)
 
@@ -73,7 +77,7 @@ class User(Base):
     donation_datetime_id = Column(Integer, ForeignKey('donation_datetime.id'), nullable=False)
     donation_datetime = relationship("DonationDatetime")
 
-    donor_status = Column(Enum(DonorStatusEnum), nullable=False, name='donor_status', default='not specified')
+    donor_status = Column(Enum(DonorStatusEnum, values_callable=get_enum_values), nullable=False, name='donor_status', default='not specified')
 
     updated_at = Column(TIMESTAMP, nullable=False, server_default='CURRENT_TIMESTAMP')
 
