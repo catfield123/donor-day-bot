@@ -20,7 +20,7 @@ INSERT INTO faculty (name) VALUES
 
 CREATE TYPE founding_source as ENUM (
     'Бюджет',
-    'Котнракт',
+    'Котнракт'
 );
 
 CREATE TYPE sex as ENUM (
@@ -76,8 +76,8 @@ CREATE TABLE "user" (
 
     bone_marrow_typing_agreement BOOL NOT NULL,
 
-    donation_place TEXT NOT NULL,
-    donation_datetime TIMESTAMP WITH TIME ZONE NOT NULL,
+    donation_place_id INTEGER NOT NULL REFERENCES donation_place(id),
+    donation_datetime_id INTEGER NOT NULL REFERENCES donation_datetime(id),
 
     donor_status donor_status NOT NULL DEFAULT 'not specified',
     
